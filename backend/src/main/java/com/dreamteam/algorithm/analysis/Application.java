@@ -1,4 +1,4 @@
-package com.dreamteam.algorythm.analysis;
+package com.dreamteam.algorithm.analysis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
