@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterDto extends LoginDto {
-    @NotBlank
+    @NotBlank(message = "Email must not be blank")
     @Email(message = "Invalid email")
     private String email;
 }

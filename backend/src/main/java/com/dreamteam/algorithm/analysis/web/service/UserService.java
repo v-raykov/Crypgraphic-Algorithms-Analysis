@@ -1,8 +1,8 @@
 package com.dreamteam.algorithm.analysis.web.service;
 
+import com.dreamteam.algorithm.analysis.config.exception.UsernameExistsException;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.User;
-import com.dreamteam.algorithm.analysis.model.dto.LoginDto;
 import com.dreamteam.algorithm.analysis.model.dto.RegisterDto;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -27,12 +27,15 @@ public class UserService implements UserDetailsService {
         return userRepository.getUserByUsername(username);
     }
 
-    public void loginUser(LoginDto details) {
-        loadUserByUsername(details.getUsername());
+    public User registerUser(RegisterDto details) {
+        throwIfUsernameExists(details.getUsername());
+        return userRepository.save(new User(details));
     }
 
-    public User registerUser(RegisterDto details) {
-        return userRepository.save(new User(details));
+    private void throwIfUsernameExists(String username) {
+        if (userRepository.existsUserByUsername(username)) {
+            throw new UsernameExistsException(username);
+        }
     }
 
     @PostConstruct

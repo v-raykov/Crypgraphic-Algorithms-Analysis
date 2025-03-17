@@ -1,4 +1,4 @@
-package com.dreamteam.algorythm.analysis;
+package com.dreamteam.algorithm.analysis;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,8 @@ public class JwtService {
     private static final int tokenExpirationTime = 1000 * 60 * 60 * 24;
 
     @Value("${secret.key}")
-    private String secretKey;
-    private final SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode("ZDY0NTI1YmMwZjA3MTQ5NzgyNzBmNjI0ZDYwNjc3MjA5NjNkZWIwN2FhYjQ1"));
+    private String secret;
+    private SecretKey key;
 
     // Generate a JWT token with expiration time
     public String generateToken(String username) {
@@ -63,5 +64,10 @@ public class JwtService {
     public boolean validateToken(String token, String username) {
         final String tokenUsername = extractUsername(token);
         return (tokenUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    @PostConstruct
+    public void init() {
+        key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 }
