@@ -1,3 +1,15 @@
-<h1>Welcome to your library project</h1>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import { Router, Route, Link } from 'svelte-routing';
+    import login from './login/+page.svelte';
+    import user from './user/+page.svelte';
+  </script>
+  
+  <Router>
+    <nav>
+      <Link to="/user">user</Link>
+      <Link to="/login">login</Link>
+    </nav>
+  
+    <Route path="/user" component={user} />
+    <Route path="/login" component={login} />
+  </Router>
