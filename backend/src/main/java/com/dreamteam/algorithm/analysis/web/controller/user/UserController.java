@@ -1,5 +1,6 @@
 package com.dreamteam.algorithm.analysis.web.controller.user;
 
+import com.dreamteam.algorithm.analysis.model.dto.UserDto;
 import com.dreamteam.algorithm.analysis.model.requests.change.EmailChangeRequest;
 import com.dreamteam.algorithm.analysis.model.requests.change.PasswordChangeRequest;
 import com.dreamteam.algorithm.analysis.model.User;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.logging.Logger;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<String> home() {
-        return ResponseEntity.ok("Home page");
+    public ResponseEntity<UserDto> userInformation(Principal principal) {
+        return ResponseEntity.ok().body(userService.getUserInformation(principal));
     }
 
     @PutMapping("/change-password")
