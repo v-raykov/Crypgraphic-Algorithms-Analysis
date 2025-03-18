@@ -1,7 +1,6 @@
 package com.dreamteam.algorithm.analysis.config.security;
 
-import com.dreamteam.algorithm.analysis.web.service.JwtService;
-import com.dreamteam.algorithm.analysis.web.service.UserService;
+import com.dreamteam.algorithm.analysis.web.service.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JwtUtils jwtUtils;
     private final UserService userService;
 
     private final Map<String, UserDetails> userDetailsCache = new ConcurrentHashMap<>();
@@ -36,10 +35,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtService.extractUsername(jwt);
+        String username = jwtUtils.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = getUserDetailsFromCacheOrDatabase(username);
-            if (jwtService.validateToken(jwt, username)) {
+            if (jwtUtils.validateToken(jwt, username)) {
                 setAuthentication(request, userDetails);
             }
         }

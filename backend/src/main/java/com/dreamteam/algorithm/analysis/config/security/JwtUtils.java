@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.web.service;
+package com.dreamteam.algorithm.analysis.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Component
-public class JwtService {
+public class JwtUtils {
     private static final int tokenExpirationTime = 1000 * 60 * 60 * 24;
 
     @Value("${secret.key}")
