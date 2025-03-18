@@ -23,7 +23,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getUserByUsername(username);
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     public void changePassword(PasswordChangeRequest request, Principal principal) {

@@ -8,7 +8,14 @@
         errorMessage = 'Please enter both username and password.';
         return;
       }
-      console.log('Login attempt:', { username, password });
+      fetch('http://localhost:8080/login', {
+        method:'POST',
+        headers: {'Content-Type': 'application/json'},
+        body:JSON.stringify({username:username, password: password})}
+      )
+              .then(response => response.json()) // Parse JSON asynchronously
+              .then(data => console.log(data))
+              .catch(err => console.error(err));
     };
   </script>
   

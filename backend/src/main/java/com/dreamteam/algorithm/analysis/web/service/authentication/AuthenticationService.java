@@ -6,6 +6,7 @@ import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.model.dto.LoginDto;
 import com.dreamteam.algorithm.analysis.model.dto.RegisterDto;
+import com.dreamteam.algorithm.analysis.model.response.JwtToken;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import com.dreamteam.algorithm.analysis.web.service.user.UserService;
 import jakarta.annotation.PostConstruct;
@@ -29,10 +30,10 @@ public class AuthenticationService {
     @Value("${owner.default.password}")
     private String ownerPassword;
 
-    public String loginUser(LoginDto details) {
+    public JwtToken loginUser(LoginDto details) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(details.getUsername(), details.getPassword()));
         userService.loadUserByUsername(details.getUsername());
-        return jwtUtils.generateToken(details.getUsername());
+        return new JwtToken(jwtUtils.generateToken(details.getUsername()));
     }
 
     public User registerUser(RegisterDto details) {

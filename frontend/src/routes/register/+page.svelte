@@ -10,7 +10,14 @@
       errorMessage = "Passwords don't match.";
       return;
     }
-    console.log('Form submitted:', { username, email, password });
+    fetch('http://localhost:8080/register', {
+      method:'POST',
+      headers: {'Content-Type': 'application/json'},
+      body:JSON.stringify({username:username, email:email, password: password})}
+    )
+            .then(response => response.json()) // Parse JSON asynchronously
+            .then(data => console.log(data))
+            .catch(err => console.error(err));
   };
 </script>
 
