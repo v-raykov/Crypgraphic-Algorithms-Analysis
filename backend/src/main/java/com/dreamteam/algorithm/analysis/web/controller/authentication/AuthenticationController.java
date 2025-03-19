@@ -3,9 +3,12 @@ package com.dreamteam.algorithm.analysis.web.controller.authentication;
 import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.model.dto.LoginDto;
 import com.dreamteam.algorithm.analysis.model.dto.RegisterDto;
+import com.dreamteam.algorithm.analysis.model.response.JwtToken;
 import com.dreamteam.algorithm.analysis.web.service.authentication.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +21,13 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDto details) {
-        return authenticationService.loginUser(details);
+    public ResponseEntity<JwtToken> login(@RequestBody LoginDto details) {
+        return ResponseEntity.ok().body(authenticationService.loginUser(details));
     }
 
     @PostMapping("/register")
-    public User register(@Valid @RequestBody RegisterDto details) {
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterDto details) {
         details.setPassword(passwordEncoder.encode(details.getPassword()));
-        return authenticationService.registerUser(details);
+        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.registerUser(details));
     }
 }

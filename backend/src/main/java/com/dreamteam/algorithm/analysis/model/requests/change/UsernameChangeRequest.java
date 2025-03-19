@@ -7,5 +7,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsernameChangeRequest extends ChangeRequest {
-    private String username;
+    private String newUsername;
 }

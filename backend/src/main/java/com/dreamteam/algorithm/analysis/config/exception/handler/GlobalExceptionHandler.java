@@ -7,6 +7,7 @@ import com.dreamteam.algorithm.analysis.config.exception.UsernameExistsException
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         var status = HttpStatus.METHOD_NOT_ALLOWED;
+        return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
+        var status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }
 

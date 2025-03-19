@@ -1,6 +1,7 @@
 package com.dreamteam.algorithm.analysis.web.service.user;
 
 import com.dreamteam.algorithm.analysis.config.exception.IncorrectPasswordException;
+import com.dreamteam.algorithm.analysis.model.dto.UserDto;
 import com.dreamteam.algorithm.analysis.model.requests.change.EmailChangeRequest;
 import com.dreamteam.algorithm.analysis.model.requests.change.PasswordChangeRequest;
 import com.dreamteam.algorithm.analysis.model.User;
@@ -8,6 +9,7 @@ import com.dreamteam.algorithm.analysis.model.requests.change.ChangeRequest;
 import com.dreamteam.algorithm.analysis.model.requests.change.UsernameChangeRequest;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +22,15 @@ import java.security.Principal;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getUserByUsername(username);
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    public UserDto getUserInformation(Principal principal) {
+        return modelMapper.map(principal, UserDto.class);
     }
 
     public void changePassword(PasswordChangeRequest request, Principal principal) {
@@ -35,13 +42,13 @@ public class UserService implements UserDetailsService {
 
     public void changeEmail(EmailChangeRequest request, User user) {
         throwIfPasswordIncorrect(request, user);
-        user.setEmail(request.getEmail());
+        user.setEmail(request.getNewEmail());
         userRepository.save(user);
     }
 
     public void changeUsername(UsernameChangeRequest request, User user) {
         throwIfPasswordIncorrect(request, user);
-        user.setUsername(request.getUsername());
+        user.setUsername(request.getNewUsername());
         userRepository.save(user);
     }
 
@@ -50,5 +57,4 @@ public class UserService implements UserDetailsService {
             throw new IncorrectPasswordException();
         }
     }
-
 }

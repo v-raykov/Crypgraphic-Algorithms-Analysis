@@ -31,7 +31,7 @@ public class OwnerController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/users/{id}/is-admin/{isAdmin}")
+    @PutMapping("/users/{id}/adminStatus/{isAdmin}")
     public ResponseEntity<Void> toggleUserAdmin(@PathVariable UUID id, @PathVariable boolean isAdmin) {
         ownerService.toggleUserAdmin(id, isAdmin);
         return ResponseEntity.noContent().build();
