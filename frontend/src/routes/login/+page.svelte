@@ -1,55 +1,61 @@
 <script>
-    import './style.css';
-    import { navigate } from 'svelte-routing';
+  import './style.css';
+  import { navigate } from 'svelte-routing';
 
-    let username = '';
-    let password = '';
-    let errorMessage = '';
-  
-    const handleLogin = () => {
-      if (!username || !password) {
-        errorMessage = 'Please enter both username and password.';
-        return;
+  let username = '';
+  let password = '';
+  let errorMessage = '';
+
+  const handleLogin = async () => {
+    if (!username || !password) {
+      errorMessage = 'Please enter both username and password.';
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token); // ✅ Store JWT token
+        navigate('/user');
+        window.location.reload(); // Reload to reflect login state
+      } else {
+        errorMessage = data.message || 'Login failed.';
       }
-      fetch('http://localhost:8080/login', {
-        method:'POST',
-        headers: {'Content-Type': 'application/json'},
-        body:JSON.stringify({username:username, password: password})}
-      )
-              .then(response => {
-                  if (response.status === 200) {
-                    navigate('/user')
-                    window.location.reload()
-                  }
-                  return response.json();
-              }) // Parse JSON asynchronously
-              .then(data => console.log(data))
-              .catch(err => console.error(err));
-    };
-  </script>
-  
-  
-  <main>
-    <div class="form-container">
-      <h1>Login</h1>
-      <form on:submit|preventDefault={handleLogin}>
-        <div class="input-group">
-          <label for="username">Username</label>
-          <input id="username" type="text" bind:value={username} required />
-        </div>
-  
-        <div class="input-group">
-          <label for="password">Password</label>
-          <input id="password" type="password" bind:value={password} required />
-        </div>
-  
-        {#if errorMessage}
-          <p class="error">{errorMessage}</p>
-        {/if}
-  
-        <button type="submit">Login</button>
-      </form>
-  
-      <p>Don't have an account? <a href="/register">Register</a></p>
-    </div>
-  </main>
+    } catch (err) {
+      console.error(err);
+      errorMessage = 'Something went wrong.';
+    }
+  };
+</script>
+
+<main>
+  <div class="form-container">
+    <h1>Login</h1>
+    <form on:submit|preventDefault={handleLogin}>
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" bind:value={username} required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" bind:value={password} required />
+      </div>
+
+      {#if errorMessage}
+        <p class="error">{errorMessage}</p>
+      {/if}
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p>Don't have an account? <a href="/register">Register</a></p>
+  </div>
+</main>
