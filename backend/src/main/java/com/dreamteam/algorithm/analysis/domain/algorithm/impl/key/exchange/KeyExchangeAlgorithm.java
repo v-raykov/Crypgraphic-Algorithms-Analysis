@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.domain.algorithm.key.exchange;
+package com.dreamteam.algorithm.analysis.domain.algorithm.impl.key.exchange;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 

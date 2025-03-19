@@ -30,7 +30,8 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto getUserInformation(Principal principal) {
-        return modelMapper.map(principal, UserDto.class);
+        var user = loadUserByUsername(principal.getName());
+        return modelMapper.map(user, UserDto.class);
     }
 
     public void changePassword(PasswordChangeRequest request, Principal principal) {

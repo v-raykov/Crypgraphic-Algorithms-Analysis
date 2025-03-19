@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.domain.algorithm.hash;
+package com.dreamteam.algorithm.analysis.domain.algorithm.impl.hash;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 

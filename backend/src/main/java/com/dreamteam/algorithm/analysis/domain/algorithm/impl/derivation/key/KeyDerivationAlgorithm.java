@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.domain.algorithm.derivation.key;
+package com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 
