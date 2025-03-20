@@ -4,8 +4,7 @@
 - The algorithm **MUST NOT be a STATIC** belonging to a class!!!
 - **BouncyCastleProvider MUST NOT** be added to **Security**. This is handled elsewhere 
 - **EACH** algorithm **MUST** be annotated with the **@Component** annotation
-- **GET** and **SET** methods **MUST** be implemented using the corresponding **LOMBOK** annotations
-- Criteria such as IV or Key size **MUST** be implemented as **NON-STATIC FINAL FIELDS** of the class.
+- **EACH** class **MUST NOT** implement **GET** and **SET** methods, instead they should be added as **LOMBOK ANNOTATIONS** just over the class name
 - **ALL FIELDS AND METHODS MUST BE NON-STATIC**
 - **ALL EXCEPTIONS SHOULD BE THROWN UP THE STACK TRACE AND NOT HANDLED**
 
@@ -32,21 +31,29 @@ Regarding the type of the algorithm
   - `byte[] generateProof(byte[] secret, byte[] publicInput);`
   - `boolean verifyProof(byte[] proof, byte[] publicInput);`
 
-### Key sizes
+### Key sizes (IN BYTES)
 Regarding the size of the key/s that it uses
 - MultipleFixedKeySizes 
-  - `List<Integer> getKeySizes();`
+  - The class implementing it **MUST** have a non-static field:
+  - ``private final List<Integer> keySizes = List.of({})``
 - SingleFixedKeySizes   
-  - `int getKeySize();`
+  - The class implementing it **MUST** have a non-static field:
+  - ``private final int keySize={}``
 - VaryingKeySizes       
-  - `boolean isValidKey(byte[] key);`
+  - The class implementing it **MUST** have non-static fields:
+    - ``private final int minKeySize = {}``
+    - ``private final int maxKeySize = {}``
 
 # OPTIONAL
 Each algorithm that is implemented using one of the following techniques **MUST** implement the interface that corresponds to it
 - RequiresIv
-  - `int getIvSize()`
+  - `private final int ivSize = {}`
     - Algorithms that also require **BLOCK SIZE MUST NOT** have a different field, holding it, instead they should use the **ivSize non-static field**.
-  - `byte[] getIv();`
-  - `void setIv(byte[] iv)`
-  - `default generateRandomIv()`
-    - This method **MUST NOT** be overwritten in any child classes. It should be used to **SET** the IV inside the class **CONSTRUCTOR**
+  - The constructor should be parameterless holding only
+    - `iv = generateRandomIv()`
+    - This method **MUST NOT** be implemented. It is already implemented in the interface. The classes should only call it.
+
+- RequiresCBCEngine
+  - `private final BlockCipher engine = {}`
+  - encrypt and decrypt methods should simply call `processData(boolean, byte[] data, byte[] key)`
+  - This method **MUST NOT** be implemented. It is already implemented in the interface. The classes should only call it.

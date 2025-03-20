@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes;
+package com.dreamteam.algorithm.analysis.domain.algorithm.key.size;
 
 import java.util.List;
 
