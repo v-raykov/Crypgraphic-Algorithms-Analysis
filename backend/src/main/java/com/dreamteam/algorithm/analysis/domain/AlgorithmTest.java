@@ -19,7 +19,12 @@ public class AlgorithmTest {
         testEncryption(new DataEncryptionStandard());
         testEncryption(new TwoFish());
         testEncryption(new TripleDES());
-
+        testEncryption(new BlowFish());
+        testEncryption(new Serpent());
+        testEncryption(new Camellia());
+        testEncryption(new CAST256());
+        testEncryption(new RC6());
+        testEncryption(new CAST128());
 
     }
 
