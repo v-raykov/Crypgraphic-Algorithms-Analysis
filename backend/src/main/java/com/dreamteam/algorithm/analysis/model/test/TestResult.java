@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.model;
+package com.dreamteam.algorithm.analysis.model.test;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,25 +8,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class AlgorithmTest {
+public class TestResult extends Test {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String algorithmName;
-
-    private String plaintext;
     private String result;
+    private LocalDateTime timestamp;
 
-    private int keySize;
-    private String key;
-    private int ivSize;
-    private String iv;
-
+    public TestResult(Test test) {
+        setAlgorithmName(test.getAlgorithmName());
+        setPlaintext(test.getPlaintext());
+    }
 }

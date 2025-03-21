@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 @Getter
 @Setter
-public class AdvancedEncryptionStandard implements EncryptionAlgorithm, RequiresIv, MultipleFixedKeySizes {
+public class AdvancedEncryptionStandard implements EncryptionAlgorithm, MultipleFixedKeySizes, RequiresIv {
 
     private final List<Integer> keySizes = List.of(16, 24, 32);
     private final int ivSize = 16;
@@ -36,5 +36,10 @@ public class AdvancedEncryptionStandard implements EncryptionAlgorithm, Requires
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "BC");
         cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         return cipher.doFinal(data);
+    }
+
+    @Override
+    public boolean validateKey(byte[] key) {
+        return keySizes.contains(key.length);
     }
 }

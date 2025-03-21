@@ -35,4 +35,10 @@ public class RC5 implements EncryptionAlgorithm, RequiresIv, VaryingKeySizes, Re
         return processData(false, data, key);
     }
 
+    @Override
+    public boolean validateKey(byte[] key) {
+        var keySize = key.length;
+        return keySize >= minKeySize && keySize <= maxKeySize;
+    }
+
 }

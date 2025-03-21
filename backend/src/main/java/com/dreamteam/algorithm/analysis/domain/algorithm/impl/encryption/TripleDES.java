@@ -39,6 +39,11 @@ public class TripleDES implements EncryptionAlgorithm, SingleFixedKeySize, Requi
         return processCipher(false, data, key);
     }
 
+    @Override
+    public boolean validateKey(byte[] key) {
+        return keySize == key.length;
+    }
+
     private byte[] processCipher(boolean encrypt, byte[] data, byte[] key) throws InvalidCipherTextException {
         BlockCipher engine = new DESedeEngine(); // Triple DES engine
         BufferedBlockCipher cipher = new PaddedBufferedBlockCipher(CBCBlockCipher.newInstance(engine));

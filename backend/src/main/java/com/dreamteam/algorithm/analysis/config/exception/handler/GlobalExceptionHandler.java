@@ -1,9 +1,6 @@
 package com.dreamteam.algorithm.analysis.config.exception.handler;
 
-import com.dreamteam.algorithm.analysis.config.exception.ForbiddenUserDeletionException;
-import com.dreamteam.algorithm.analysis.config.exception.IncorrectPasswordException;
-import com.dreamteam.algorithm.analysis.config.exception.UserNotFoundException;
-import com.dreamteam.algorithm.analysis.config.exception.UsernameExistsException;
+import com.dreamteam.algorithm.analysis.config.exception.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +45,12 @@ public class GlobalExceptionHandler {
     }
 
     // Custom Exceptions
+
+    @ExceptionHandler(AlgorithmDoesNotExistsException.class)
+    public ResponseEntity<ErrorResponse> handleAlgorithmDoesNotExistsException(AlgorithmDoesNotExistsException ex) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
+    }
 
     @ExceptionHandler(UsernameExistsException.class)
     public ResponseEntity<ErrorResponse> handleUsernameExistsException(UsernameExistsException ex) {

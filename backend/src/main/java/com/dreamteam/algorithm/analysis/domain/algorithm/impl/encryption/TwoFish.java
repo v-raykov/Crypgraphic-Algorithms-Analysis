@@ -39,6 +39,11 @@ public class TwoFish implements EncryptionAlgorithm, MultipleFixedKeySizes, Requ
         return processCipher(false, data, key);
     }
 
+    @Override
+    public boolean validateKey(byte[] key) {
+        return keySizes.contains(key.length);
+    }
+
     private byte[] processCipher(boolean encrypt, byte[] input, byte[] key) throws InvalidCipherTextException {
         PaddedBufferedBlockCipher cipher = new PaddedBufferedBlockCipher(CBCBlockCipher.newInstance(new TwofishEngine()));
         cipher.init(encrypt, new ParametersWithIV(new KeyParameter(key), iv));

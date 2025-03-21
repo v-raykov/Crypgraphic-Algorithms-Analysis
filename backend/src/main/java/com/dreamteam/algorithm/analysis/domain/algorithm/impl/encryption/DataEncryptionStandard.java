@@ -33,6 +33,11 @@ public class DataEncryptionStandard implements EncryptionAlgorithm, SingleFixedK
         return performCipherOperation(data, key, Cipher.DECRYPT_MODE);
     }
 
+    @Override
+    public boolean validateKey(byte[] key) {
+        return keySize == key.length;
+    }
+
     private Cipher initializeCipher(byte[] key, int mode) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         SecretKeySpec secretKey = new SecretKeySpec(key, "DES");

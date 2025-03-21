@@ -34,4 +34,9 @@ public class Serpent implements EncryptionAlgorithm, RequiresIv, MultipleFixedKe
     public byte[] decrypt(byte[] data, byte[] key) throws Exception {
         return processData(false, data, key);
     }
+
+    @Override
+    public boolean validateKey(byte[] key) {
+        return keySizes.contains(key.length);
+    }
 }
