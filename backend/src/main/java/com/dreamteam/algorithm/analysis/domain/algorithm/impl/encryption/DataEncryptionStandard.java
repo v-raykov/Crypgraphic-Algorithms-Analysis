@@ -34,8 +34,9 @@ public class DataEncryptionStandard implements EncryptionAlgorithm, SingleFixedK
     }
 
     @Override
-    public boolean validateKey(byte[] key) {
-        return keySize == key.length;
+    public boolean isValidKeySize(int keySize) {
+        return keySize == keySize;
+
     }
 
     private Cipher initializeCipher(byte[] key, int mode) throws Exception {

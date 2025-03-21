@@ -36,7 +36,9 @@ public class CAST256 implements EncryptionAlgorithm, RequiresIv, MultipleFixedKe
     }
 
     @Override
-    public boolean validateKey(byte[] key) {
-        return keySizes.contains(key.length);
+    public boolean isValidKeySize(int keySize) {
+        return keySizes.contains(keySize);
     }
-}
+
+
+    }

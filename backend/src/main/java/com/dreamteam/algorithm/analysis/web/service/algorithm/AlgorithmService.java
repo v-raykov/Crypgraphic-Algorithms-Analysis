@@ -57,12 +57,12 @@ public class AlgorithmService {
                 return getKey(getKeySize(algorithm));
             }
             key = getKey(keySize);
-            if (algorithm.validateKey(key)) {
+            if (algorithm.isValidKeySize(keySize)) {
                 return key;
             }
             throw new IllegalArgumentException(keySize + " is not a valid key");
         }
-        if (algorithm.validateKey(key)) {
+        if (algorithm.isValidKeySize(keySize)) {
             return key;
         }
         throw new IllegalArgumentException(keySize + " is not a valid key");

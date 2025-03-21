@@ -35,7 +35,9 @@ public class Camellia implements EncryptionAlgorithm, RequiresIv, MultipleFixedK
     }
 
     @Override
-    public boolean validateKey(byte[] key) {
-        return keySizes.contains(key.length);
+    public boolean isValidKeySize(int keySize) {
+        return keySizes.contains(keySize);
+
     }
+
 }

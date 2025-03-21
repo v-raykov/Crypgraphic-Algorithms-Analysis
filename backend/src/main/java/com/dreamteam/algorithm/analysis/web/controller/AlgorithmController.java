@@ -15,5 +15,6 @@ public class AlgorithmController {
     @PostMapping
     public TestResult testAlgorithm(@RequestBody EncryptionTest test) {
 
+        return null;
     }
 }
