@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.model.test.factory;
+package com.dreamteam.algorithm.analysis.config.jackson;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;

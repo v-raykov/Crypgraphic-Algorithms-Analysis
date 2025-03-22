@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.config.security;
+package com.dreamteam.algorithm.analysis.config.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

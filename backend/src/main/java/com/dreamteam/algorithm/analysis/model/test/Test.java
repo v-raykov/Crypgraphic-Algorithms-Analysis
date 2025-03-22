@@ -4,7 +4,7 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
-import com.dreamteam.algorithm.analysis.model.test.factory.TestDeserializer;
+import com.dreamteam.algorithm.analysis.config.jackson.TestDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.security.SecureRandom;

@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.model.test.factory;
+package com.dreamteam.algorithm.analysis.config.jackson;
 
 import com.dreamteam.algorithm.analysis.config.exception.AlgorithmDoesNotExistsException;
 import com.dreamteam.algorithm.analysis.model.test.Test;

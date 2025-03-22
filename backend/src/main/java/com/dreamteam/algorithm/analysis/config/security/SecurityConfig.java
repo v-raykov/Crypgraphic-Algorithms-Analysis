@@ -1,5 +1,7 @@
 package com.dreamteam.algorithm.analysis.config.security;
 
+import com.dreamteam.algorithm.analysis.config.security.jwt.JwtAuthFilter;
+import com.dreamteam.algorithm.analysis.config.security.rate.limit.RateLimitFilter;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final CorsFilter corsFilter;
+    private final RateLimitFilter rateLimitFilter;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -32,6 +35,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

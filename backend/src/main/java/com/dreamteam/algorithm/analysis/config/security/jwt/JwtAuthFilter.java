@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.config.security;
+package com.dreamteam.algorithm.analysis.config.security.jwt;
 
 import com.dreamteam.algorithm.analysis.web.service.user.UserService;
 import jakarta.servlet.FilterChain;

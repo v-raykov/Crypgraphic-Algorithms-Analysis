@@ -1,8 +1,6 @@
 package com.dreamteam.algorithm.analysis.config.jackson;
 
 import com.dreamteam.algorithm.analysis.model.test.Test;
-import com.dreamteam.algorithm.analysis.model.test.factory.TestDeserializer;
-import com.dreamteam.algorithm.analysis.model.test.factory.TestFactory;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
