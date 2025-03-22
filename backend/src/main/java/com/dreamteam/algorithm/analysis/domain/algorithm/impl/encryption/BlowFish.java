@@ -20,10 +20,6 @@ public class BlowFish implements EncryptionAlgorithm, RequiresIv, VaryingKeySize
     private final BlockCipher engine = new BlowfishEngine();
     private byte[] iv;
 
-    public BlowFish() {
-        this.iv = generateRandomIv();
-    }
-
     @Override
     public byte[] encrypt(byte[] data, byte[] key) throws Exception {
         return processData(true, data, key);
@@ -38,6 +34,4 @@ public class BlowFish implements EncryptionAlgorithm, RequiresIv, VaryingKeySize
     public boolean isValidKeySize(int keySize) {
         return keySize >= minKeySize && keySize <= maxKeySize;
     }
-
-
-    }
+}

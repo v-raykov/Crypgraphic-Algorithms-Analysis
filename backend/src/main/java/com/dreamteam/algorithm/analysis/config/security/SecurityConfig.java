@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/register", "/login").permitAll()
                         .requestMatchers("/admin").hasAnyAuthority(Role.ADMIN.toString(), Role.OWNER.toString())
                         .requestMatchers("/owner").hasAnyAuthority(Role.OWNER.toString())
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)

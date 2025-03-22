@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.web.controller;
 
-import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
+import com.dreamteam.algorithm.analysis.model.test.Test;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
 import com.dreamteam.algorithm.analysis.web.service.algorithm.AlgorithmService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlgorithmController {
     private final AlgorithmService algorithmService;
     @PostMapping
-    public TestResult testAlgorithm(@RequestBody EncryptionTest test) {
-
-        return null;
+    public TestResult testAlgorithm(@RequestBody Test test) {
+        return algorithmService.testAlgorithm(test);
     }
 }
