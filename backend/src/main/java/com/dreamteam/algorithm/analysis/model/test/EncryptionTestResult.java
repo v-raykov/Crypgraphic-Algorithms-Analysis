@@ -21,6 +21,10 @@ public class EncryptionTestResult extends EncryptionTest implements TestResult {
     private UUID id;
 
     private String result;
+    private long encryptionTime;
+    private long decryptionTime;
+    private long encryptionMemory;
+    private long decryptionMemory;
     private LocalDateTime timestamp;
 
     public EncryptionTestResult(EncryptionTest test) {

@@ -8,8 +8,8 @@ import com.dreamteam.algorithm.analysis.model.test.EncryptionTestResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Service
@@ -17,33 +17,51 @@ import java.util.Base64;
 public class TestService {
     public EncryptionTestResult testEncryption(EncryptionAlgorithm algorithm, EncryptionTest test) {
         var result = new EncryptionTestResult(test);
-        setIvIfRequired(algorithm, test);
-        String encrypted = performEncryptionTest(algorithm, test.getPlaintext(), test.getEncryptionKey());
-        result.setResult(encrypted);
-        result.setTimestamp(LocalDateTime.now());
+        applyInitializationVectorIfNeeded(algorithm, test);
+        executeEncryptionTest(algorithm, test.getPlaintext(), test.getEncryptionKey(), result);
         return result;
     }
 
-    private String performEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key) {
+    private void executeEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key, EncryptionTestResult result) {
         try {
-            byte[] encrypted = algorithm.encrypt(plaintext.getBytes(), key);
-            byte[] decrypted = algorithm.decrypt(encrypted, key);
-            validateResult(decrypted, plaintext, algorithm.getName());
-            return Base64.getEncoder().encodeToString(encrypted);
+            byte[] encrypted = encryptData(algorithm, plaintext, key, result);
+            byte[] decrypted = decryptData(algorithm, encrypted, key, result);
+            validateDecryption(decrypted, plaintext, algorithm.getName());
+
+            result.setResult(encodeBase64(encrypted));
+            result.setTimestamp(LocalDateTime.now());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void setIvIfRequired(EncryptionAlgorithm algorithm, EncryptionTest test) {
-        if (algorithm instanceof RequiresIv requiresIv) {
-            requiresIv.setIv(test.getIv());
+    private byte[] encryptData(EncryptionAlgorithm algorithm, String plaintext, byte[] key, EncryptionTestResult result) throws Exception {
+        return PerformanceMonitor.measureExecution(() -> algorithm.encrypt(plaintext.getBytes(), key),
+                result::setEncryptionTime,
+                result::setEncryptionMemory
+        );
+    }
+
+    private byte[] decryptData(EncryptionAlgorithm algorithm, byte[] encrypted, byte[] key, EncryptionTestResult result) throws Exception {
+        return PerformanceMonitor.measureExecution(() -> algorithm.decrypt(encrypted, key),
+                result::setDecryptionTime,
+                result::setDecryptionMemory
+        );
+    }
+
+    private void validateDecryption(byte[] decrypted, String original, String algorithmName) {
+        if (!Arrays.equals(decrypted, original.getBytes())) {
+            throw new FaultyAlgorithmException(algorithmName);
         }
     }
 
-    private void validateResult(byte[] decrypted, String plaintext, String algorithmName) {
-        if (!new String(decrypted, StandardCharsets.UTF_8).equals(plaintext)) {
-            throw new FaultyAlgorithmException(algorithmName);
+    private String encodeBase64(byte[] data) {
+        return Base64.getEncoder().encodeToString(data);
+    }
+
+    private void applyInitializationVectorIfNeeded(EncryptionAlgorithm algorithm, EncryptionTest test) {
+        if (algorithm instanceof RequiresIv requiresIv) {
+            requiresIv.setIv(test.getIv());
         }
     }
 }
