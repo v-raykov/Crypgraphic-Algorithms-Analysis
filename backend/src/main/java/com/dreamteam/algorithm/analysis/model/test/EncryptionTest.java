@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Base64;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -31,18 +29,6 @@ public class EncryptionTest implements Test {
         this.keySize = test.getKeySize();
         this.iv = test.getIv();
         this.ivSize = test.getIvSize();
-    }
-
-    @Override
-    public String toString() {
-        return String.format("""
-                algorithmName: %s,
-                plaintext: %s,
-                encryptionKey: %s,
-                keySize: %d,
-                iv: %s,
-                ivSize: %d
-                """, algorithmName, plaintext, Base64.getEncoder().encodeToString(encryptionKey), keySize,  Base64.getEncoder().encodeToString(iv), ivSize);
     }
 
     @Override
