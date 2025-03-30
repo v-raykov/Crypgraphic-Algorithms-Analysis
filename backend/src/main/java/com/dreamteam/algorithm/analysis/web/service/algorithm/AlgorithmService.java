@@ -21,17 +21,16 @@ public class AlgorithmService {
 
     public TestResult testAlgorithm(Test test, Optional<User> user) {
         var algorithm = findAlgorithm(test.getAlgorithmName());
-        var result = switch (algorithm) {
-            case EncryptionAlgorithm a -> testEncryption(a, test);
+        var result = switch (test) {
+            case EncryptionTest t when algorithm instanceof EncryptionAlgorithm a -> testEncryption(a, t);
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
         };
         return result;
     }
 
-    private TestResult testEncryption(EncryptionAlgorithm encryptionAlgorithm, Test test) {
-        var encryptionTest = (EncryptionTest) test;
-        encryptionTest.setDefaultValues(encryptionAlgorithm);
-        return testService.testEncryption(encryptionAlgorithm, encryptionTest);
+    private TestResult testEncryption(EncryptionAlgorithm algorithm, EncryptionTest test) {
+        test.setDefaultValues(algorithm);
+        return testService.testEncryption(algorithm, test);
     }
 
     public Algorithm findAlgorithm(String algorithmName) {

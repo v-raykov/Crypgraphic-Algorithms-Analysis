@@ -1,6 +1,7 @@
-package com.dreamteam.algorithm.analysis.web.service.algorithm;
+package com.dreamteam.algorithm.analysis.web.service.algorithm.helper;
 
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
+import com.dreamteam.algorithm.analysis.web.service.algorithm.AlgorithmService;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

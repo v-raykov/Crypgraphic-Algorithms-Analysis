@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
-import static com.dreamteam.algorithm.analysis.web.service.algorithm.TestExecutionHelper.*;
+import static com.dreamteam.algorithm.analysis.web.service.algorithm.helper.TestExecutionHelper.*;
 
 @Service
 @RequiredArgsConstructor

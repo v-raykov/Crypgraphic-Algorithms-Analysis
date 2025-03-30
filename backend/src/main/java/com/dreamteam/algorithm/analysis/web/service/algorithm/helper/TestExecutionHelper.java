@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.web.service.algorithm;
+package com.dreamteam.algorithm.analysis.web.service.algorithm.helper;
 
 import com.dreamteam.algorithm.analysis.config.exception.FaultyAlgorithmException;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;

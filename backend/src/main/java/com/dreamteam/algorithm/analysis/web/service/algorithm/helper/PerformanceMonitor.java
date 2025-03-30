@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.web.service.algorithm;
+package com.dreamteam.algorithm.analysis.web.service.algorithm.helper;
 
 import com.sun.management.ThreadMXBean;
 
