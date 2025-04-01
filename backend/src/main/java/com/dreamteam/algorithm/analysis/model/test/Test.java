@@ -11,12 +11,10 @@ import java.security.SecureRandom;
 
 @JsonDeserialize(using = TestDeserializer.class)
 public interface Test {
-   String getAlgorithmName();
-   void setAlgorithmName(String algorithmName);
+   Algorithm getAlgorithm();
    String getPlaintext();
-   void setPlaintext(String plaintext);
 
-    void setDefaultValues(Algorithm algorithm);
+    void setDefaultValues();
 
     default byte[] getKey(int keySize) {
         var key = new byte[keySize];

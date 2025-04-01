@@ -3,7 +3,6 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm.helper;
 import com.dreamteam.algorithm.analysis.config.exception.FaultyAlgorithmException;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
-import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTestResult;
 
 import java.util.Arrays;
@@ -29,9 +28,9 @@ public class TestExecutionHelper {
         }
     }
 
-    public static void applyInitializationVectorIfNeeded(EncryptionAlgorithm algorithm, EncryptionTest test) {
+    public static void applyInitializationVectorIfNeeded(EncryptionAlgorithm algorithm, byte[] iv) {
         if (algorithm instanceof RequiresIv requiresIv) {
-            requiresIv.setIv(test.getIv());
+            requiresIv.setIv(iv);
         }
     }
 }

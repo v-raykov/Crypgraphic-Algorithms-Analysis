@@ -16,21 +16,20 @@ public class TestFactory {
     private final AlgorithmService algorithmService;
 
     public Test createTestFromJson(JsonNode node) {
-        var algorithm = algorithmService.findAlgorithm(node.get("algorithmName").asText());
+        var algorithm = algorithmService.findAlgorithm(node.get("algorithm").asText());
         return switch (algorithm) {
-            case EncryptionAlgorithm ignored -> createEncryptionTest(node);
+            case EncryptionAlgorithm a -> createEncryptionTest(node, a);
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
         };
     }
 
-    private Test createEncryptionTest(JsonNode node) {
-        var test = new EncryptionTest();
-        test.setAlgorithmName(node.get("algorithmName").asText());
-        test.setPlaintext(node.get("plaintext").asText());
-        test.setEncryptionKey(getBytesIfProvided(node, "encryptionKey"));
-        test.setKeySize(getIntIfProvided(node, "keySize"));
-        test.setIv(getBytesIfProvided(node, "iv"));
-        return test;
+    private Test createEncryptionTest(JsonNode node, EncryptionAlgorithm algorithm) {
+        return new EncryptionTest(algorithm,
+                node.get("plaintext").asText(),
+                getBytesIfProvided(node, "encryptionKey"),
+                getIntIfProvided(node, "keySize"),
+                getBytesIfProvided(node, "iv")
+        );
     }
 
     private int getIntIfProvided(JsonNode node, String fieldName) {

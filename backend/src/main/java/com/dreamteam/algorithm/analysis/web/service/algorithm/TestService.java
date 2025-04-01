@@ -14,9 +14,10 @@ import static com.dreamteam.algorithm.analysis.web.service.algorithm.helper.Test
 @Service
 @RequiredArgsConstructor
 public class TestService {
-    public EncryptionTestResult testEncryption(EncryptionAlgorithm algorithm, EncryptionTest test) {
+    public EncryptionTestResult testEncryption(EncryptionTest test) {
         var result = new EncryptionTestResult(test);
-        applyInitializationVectorIfNeeded(algorithm, test);
+        var algorithm = test.getAlgorithm();
+        applyInitializationVectorIfNeeded(algorithm, test.getIv());
         executeEncryptionTest(algorithm, test.getPlaintext(), test.getEncryptionKey(), result);
         return result;
     }
