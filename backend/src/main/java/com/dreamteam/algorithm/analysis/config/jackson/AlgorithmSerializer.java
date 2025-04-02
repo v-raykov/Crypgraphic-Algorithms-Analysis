@@ -10,8 +10,6 @@ import java.io.IOException;
 public class AlgorithmSerializer extends JsonSerializer<Algorithm> {
     @Override
     public void serialize(Algorithm algorithm, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        gen.writeStartObject();
-        gen.writeStringField("name", algorithm.getName());
-        gen.writeEndObject();
+        gen.writeString(algorithm.getName());
     }
 }
