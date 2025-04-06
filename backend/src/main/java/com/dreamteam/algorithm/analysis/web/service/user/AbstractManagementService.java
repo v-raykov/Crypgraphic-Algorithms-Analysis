@@ -5,7 +5,6 @@ import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @NoArgsConstructor
 public abstract class AbstractManagementService {
@@ -19,6 +18,6 @@ public abstract class AbstractManagementService {
         return userRepository.findAll();
     }
 
-    public abstract void deleteUser(UUID id);
+    public abstract void deleteUser(String id);
 
 }

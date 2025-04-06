@@ -7,8 +7,6 @@ import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class AdminService extends AbstractManagementService {
     private final UserRepository userRepository;
@@ -19,7 +17,7 @@ public class AdminService extends AbstractManagementService {
     }
 
     @Override
-    public void deleteUser(UUID id) {
+    public void deleteUser(String id) {
         var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
         throwIfUserIsAdmin(user);
         userRepository.delete(user);

@@ -13,7 +13,7 @@ import static com.dreamteam.algorithm.analysis.web.service.algorithm.helper.Test
 
 @Service
 @RequiredArgsConstructor
-public class TestService {
+public class TestExecutionService {
     public EncryptionTestResult testEncryption(EncryptionTest test) {
         var result = new EncryptionTestResult(test);
         var algorithm = test.getAlgorithm();

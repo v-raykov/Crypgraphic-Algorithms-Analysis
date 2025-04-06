@@ -26,7 +26,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         adminService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

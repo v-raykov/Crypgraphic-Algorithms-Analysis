@@ -6,24 +6,28 @@ import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.model.test.Test;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.test.result.storage.ResultStorage;
+import com.dreamteam.algorithm.analysis.repository.TestResultRepository;
+import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AlgorithmService {
+public class TestingService {
     private final Map<String, Algorithm> algorithms;
-    private final TestService testService;
+    private final TestExecutionService testService;
+    private final UserRepository userRepository;
+    private final TestResultRepository resultRepository;
 
-    public TestResult testAlgorithm(Test test, Optional<User> user) {
+    public TestResult testAlgorithm(Test test, ResultStorage storage) {
         var result = switch (test) {
             case EncryptionTest t -> testService.testEncryption(t);
             default -> throw new IllegalStateException("Unexpected value: " + test);
         };
-        return result;
+        return saveResult(result, storage);
     }
 
     public Algorithm findAlgorithm(String algorithmName) {
@@ -32,6 +36,15 @@ public class AlgorithmService {
             throw new AlgorithmDoesNotExistsException(algorithmName);
         }
         return algorithm;
+    }
+
+    private TestResult saveResult(TestResult result, ResultStorage storage) {
+        var savedResult = resultRepository.save(result);
+        storage.addTestResult(savedResult);
+        if (storage instanceof User user) {
+            userRepository.save(user);
+        }
+        return savedResult;
     }
 
 }

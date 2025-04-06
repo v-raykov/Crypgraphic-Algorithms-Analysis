@@ -4,13 +4,15 @@ import com.dreamteam.algorithm.analysis.config.exception.InvalidKeySizeException
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class EncryptionTest implements Test {
-    private final EncryptionAlgorithm algorithm;
-    private final String plaintext;
+    private EncryptionAlgorithm algorithm;
+    private String plaintext;
     private byte[] encryptionKey;
     private int keySize;
 
@@ -41,12 +43,6 @@ public class EncryptionTest implements Test {
         this.algorithm = algorithm;
         this.plaintext = plaintext;
         setDefaultValues();
-    }
-
-    // Default constructor needed for inheriting class
-    public EncryptionTest() {
-        algorithm = null;
-        plaintext = null;
     }
 
     @Override

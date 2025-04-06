@@ -2,6 +2,8 @@ package com.dreamteam.algorithm.analysis.model;
 
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.dto.RegisterDto;
+import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.test.result.storage.ResultStorage;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Document
-public class User implements UserDetails {
+public class User implements UserDetails, ResultStorage {
     @Id
     private String id;
 
@@ -26,6 +29,8 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private Role role;
+
+    private List<TestResult> testResults = new ArrayList<>();
 
     public User(RegisterDto details) {
         username = details.getUsername();
