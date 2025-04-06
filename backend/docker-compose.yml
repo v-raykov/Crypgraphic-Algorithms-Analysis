@@ -1,27 +1,25 @@
 services:
-  database:
-    image: mysql:8
-    container_name: database
+  mongo:
+    image: mongo:6
+    container_name: CAA-mongo-test
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: algorithm_analysis
+      MONGO_INITDB_DATABASE: algorithm_analysis
     ports:
-      - "3306:3306"
+      - "27017:27017"
     volumes:
-      - db-data:/var/lib/mysql
+      - mongo-data:/data/db
 
   backend:
     build:
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: CAA-backend-test
     depends_on:
-      - database
+      - mongo
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/algorithm_analysis
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/algorithm_analysis
     ports:
       - "8080:8080"
+
 volumes:
-  db-data:
+  mongo-data:

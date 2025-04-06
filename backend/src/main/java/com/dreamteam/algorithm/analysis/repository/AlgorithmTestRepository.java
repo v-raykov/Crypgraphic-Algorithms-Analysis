@@ -1,9 +1,9 @@
 package com.dreamteam.algorithm.analysis.repository;
 
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTestResult;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.UUID;
 
-public interface AlgorithmTestRepository extends JpaRepository<EncryptionTestResult, UUID> {
+public interface AlgorithmTestRepository extends MongoRepository<EncryptionTestResult, UUID> {
 }
