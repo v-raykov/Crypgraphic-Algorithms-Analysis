@@ -3,7 +3,6 @@ package com.dreamteam.algorithm.analysis.model;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.dto.RegisterDto;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
-import com.dreamteam.algorithm.analysis.model.test.result.storage.ResultStorage;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Document
-public class User implements UserDetails, ResultStorage {
+public class User implements UserDetails {
     @Id
     private String id;
 
