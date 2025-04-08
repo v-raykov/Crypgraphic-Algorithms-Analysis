@@ -1,6 +1,7 @@
 package com.dreamteam.algorithm.analysis.config.jackson;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -16,6 +17,7 @@ public class AlgorithmSerializer extends JsonSerializer<Algorithm> {
     public void serialize(Algorithm algorithm, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         gen.writeStringField("name", algorithm.getName());
+        gen.writeStringField("type", AlgorithmType.fromAlgorithm(algorithm).toString());
         Field[] fields = algorithm.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);

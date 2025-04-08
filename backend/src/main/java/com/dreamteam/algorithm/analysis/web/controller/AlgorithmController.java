@@ -18,7 +18,7 @@ public class AlgorithmController {
     private final TestService testService;
     private final ResultStorage resultStorage;
 
-    @GetMapping("/algorithms")
+    @GetMapping("/algorithm")
     public ResponseEntity<List<Algorithm>> getAlgorithms() {
         return ResponseEntity.ok()
                 .body(testService.getAlgorithms());

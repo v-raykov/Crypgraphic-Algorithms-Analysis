@@ -1,6 +1,7 @@
 package com.dreamteam.algorithm.analysis.model.test;
 
 import com.dreamteam.algorithm.analysis.config.exception.InvalidKeySizeException;
+import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EncryptionTest implements Test {
     private EncryptionAlgorithm algorithm;
+    private final String type = AlgorithmType.ENCRYPTION.toString();
     private String plaintext;
     private byte[] encryptionKey;
     private int keySize;
