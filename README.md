@@ -4,9 +4,17 @@
   - `{username, password}`
 - /register (POST)
   - `{username, email, password`
-## Home
-- /
-  - Main page used for testing purposes. Currently returns `{response:"Hello World"}`
+## Algorithms
+- /algorithms (GET)
+
+## Test
+- /test (GET)
+- /test/{id} (GET)
+- /test (POST)
+  - has two required and many optional fields.
+  - required fields: `{algorithm, plaintext}`
+  - the optional fields depend on the algorithm type
+  - encryption optional fields: `encryptionKey, keySize, iv`
 
 ## User
 - /user (GET)
