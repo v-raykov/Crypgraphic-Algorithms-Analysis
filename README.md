@@ -5,7 +5,7 @@
 - /register (POST)
   - `{username, email, password`
 ## Algorithms
-- /algorithms (GET)
+- /algorithm (GET)
 
 ## Test
 - /test (GET)
