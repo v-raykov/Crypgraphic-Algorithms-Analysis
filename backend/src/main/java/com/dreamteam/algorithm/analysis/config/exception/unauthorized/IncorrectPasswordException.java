@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.config.exception;
+package com.dreamteam.algorithm.analysis.config.exception.unauthorized;
 
 public class IncorrectPasswordException extends RuntimeException {
     public IncorrectPasswordException() {

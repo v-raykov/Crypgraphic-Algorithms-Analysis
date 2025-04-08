@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.web.service.user;
 
-import com.dreamteam.algorithm.analysis.config.exception.ForbiddenUserDeletionException;
-import com.dreamteam.algorithm.analysis.config.exception.UserNotFoundException;
+import com.dreamteam.algorithm.analysis.config.exception.unauthorized.ForbiddenUserDeletionException;
+import com.dreamteam.algorithm.analysis.config.exception.not.found.UserNotFoundException;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;

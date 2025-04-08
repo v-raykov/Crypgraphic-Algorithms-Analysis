@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.config.exception;
+package com.dreamteam.algorithm.analysis.config.exception.not.found;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {

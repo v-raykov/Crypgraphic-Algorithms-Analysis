@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.config.exception;
+package com.dreamteam.algorithm.analysis.config.exception.not.found;
 
 public class TestResultNotFoundException extends RuntimeException {
     public TestResultNotFoundException(String message) {

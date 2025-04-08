@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.web.service.user;
 
-import com.dreamteam.algorithm.analysis.config.exception.IncorrectPasswordException;
+import com.dreamteam.algorithm.analysis.config.exception.unauthorized.IncorrectPasswordException;
 import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.model.dto.UserDto;
 import com.dreamteam.algorithm.analysis.model.requests.change.ChangeRequest;

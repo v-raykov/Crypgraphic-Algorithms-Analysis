@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.web.service.user;
 
-import com.dreamteam.algorithm.analysis.config.exception.UserNotFoundException;
+import com.dreamteam.algorithm.analysis.config.exception.not.found.UserNotFoundException;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import org.springframework.stereotype.Service;

@@ -6,6 +6,9 @@
   - `{username, email, password`
 ## Algorithms
 - /algorithm (GET)
+- /algorithm/name/{name} (GET)
+- /algorithm/type/{type} (GET) 
+  - the type value should be the type field of the algorithm but in kebab case (e.g. "Key Derivation" -> key-derivation)
 
 ## Test
 - /test (GET)
