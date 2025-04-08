@@ -6,7 +6,7 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.Setter;
 import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.engines.RC6Engine;
+import org.bouncycastle.crypto.engines.CAST6Engine;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,14 +14,14 @@ import java.util.List;
 @Component
 @Getter
 @Setter
-public class RC6 implements EncryptionAlgorithm, RequiresIv, MultipleFixedKeySizes, RequiresCBCEngine {
+public class Cast256 implements EncryptionAlgorithm, RequiresIv, MultipleFixedKeySizes, RequiresCBCEngine {
 
-    private final int ivSize = 16; // RC6 block size is 128 bits (16 bytes)
+    private final int ivSize = 16; // CAST-256 block size is 128 bits (16 bytes)
     private final List<Integer> keySizes = List.of(16, 24, 32);
-    private final BlockCipher engine = new RC6Engine();
+    private final BlockCipher engine = new CAST6Engine();
     private byte[] iv;
 
-    public RC6() {
+    public Cast256() {
         this.iv = generateRandomIv();
     }
 
@@ -39,7 +39,6 @@ public class RC6 implements EncryptionAlgorithm, RequiresIv, MultipleFixedKeySiz
     public boolean isValidKeySize(int keySize) {
         return keySizes.contains(keySize);
     }
-
 
 
     }

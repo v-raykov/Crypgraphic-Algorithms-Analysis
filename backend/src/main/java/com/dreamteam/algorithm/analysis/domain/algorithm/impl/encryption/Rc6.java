@@ -1,26 +1,27 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresCBCEngine;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.Setter;
 import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.engines.CAST5Engine;
+import org.bouncycastle.crypto.engines.RC6Engine;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Getter
 @Setter
-public class CAST128 implements EncryptionAlgorithm, RequiresIv, VaryingKeySizes, RequiresCBCEngine {
+public class Rc6 implements EncryptionAlgorithm, RequiresIv, MultipleFixedKeySizes, RequiresCBCEngine {
 
-    private final int ivSize = 8; // CAST-128 block size is 64 bits (8 bytes)
-    private final int minKeySize = 5;
-    private final int maxKeySize = 16;
-    private final BlockCipher engine = new CAST5Engine();
+    private final int ivSize = 16; // RC6 block size is 128 bits (16 bytes)
+    private final List<Integer> keySizes = List.of(16, 24, 32);
+    private final BlockCipher engine = new RC6Engine();
     private byte[] iv;
 
-    public CAST128() {
+    public Rc6() {
         this.iv = generateRandomIv();
     }
 
@@ -36,9 +37,9 @@ public class CAST128 implements EncryptionAlgorithm, RequiresIv, VaryingKeySizes
 
     @Override
     public boolean isValidKeySize(int keySize) {
-        return keySize >= minKeySize && keySize <= maxKeySize;
+        return keySizes.contains(keySize);
     }
 
 
-    }
 
+    }

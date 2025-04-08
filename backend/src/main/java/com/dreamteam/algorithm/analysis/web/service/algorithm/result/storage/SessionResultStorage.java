@@ -3,12 +3,14 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
-@Component
+@RequestScope
 public class SessionResultStorage implements ResultStorage {
     private final HttpSession httpSession;
 

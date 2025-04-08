@@ -6,20 +6,22 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.Setter;
 import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.engines.RC2Engine;
+import org.bouncycastle.crypto.engines.RC532Engine;
 import org.springframework.stereotype.Component;
 
 @Component
-@Setter
 @Getter
-public class RC2 implements EncryptionAlgorithm, RequiresIv, VaryingKeySizes, RequiresCBCEngine {
-    private final int ivSize = 8; // RC2 block size is 64 bits (8 bytes)
-    private final int minKeySize = 1;
-    private final int maxKeySize = 16;
-    private final BlockCipher engine = new RC2Engine();
+@Setter
+public class Rc5 implements EncryptionAlgorithm, RequiresIv, VaryingKeySizes, RequiresCBCEngine {
+
+    private final int ivSize = 8; // RC5 block size is 64 bits (8 bytes)
+    private final int minKeySize = 5;
+    private final int maxKeySize = 255;
+    private final BlockCipher engine = new RC532Engine();
+
     private byte[] iv;
 
-    public RC2() {
+    public Rc5() {
         this.iv = generateRandomIv();
     }
 
@@ -38,4 +40,6 @@ public class RC2 implements EncryptionAlgorithm, RequiresIv, VaryingKeySizes, Re
         return keySize >= minKeySize && keySize <= maxKeySize;
     }
 
-}
+
+    }
+

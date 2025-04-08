@@ -1,15 +1,18 @@
 package com.dreamteam.algorithm.analysis.model.test;
 
+import com.dreamteam.algorithm.analysis.config.jackson.TestDeserializer;
+import com.dreamteam.algorithm.analysis.config.jackson.TestSerializer;
 import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
-import com.dreamteam.algorithm.analysis.config.jackson.TestDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.security.SecureRandom;
 
 @JsonDeserialize(using = TestDeserializer.class)
+@JsonSerialize(using = TestSerializer.class)
 public interface Test {
    Algorithm getAlgorithm();
    String getPlaintext();

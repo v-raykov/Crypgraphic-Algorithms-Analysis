@@ -10,6 +10,7 @@ import com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage.Res
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -41,4 +42,7 @@ public class TestService {
         return savedResult;
     }
 
+    public List<Algorithm> getAlgorithms() {
+        return List.copyOf(algorithms.values());
+    }
 }

@@ -24,11 +24,11 @@ public class AlgorithmTest {
         testEncryption(new BlowFish());
         testEncryption(new Serpent());
         testEncryption(new Camellia());
-        testEncryption(new CAST128());
-        testEncryption(new CAST256());
-        testEncryption(new RC2());
-        testEncryption(new RC5());
-        testEncryption(new RC6());
+        testEncryption(new Cast128());
+        testEncryption(new Cast256());
+        testEncryption(new Rc2());
+        testEncryption(new Rc5());
+        testEncryption(new Rc6());
 
 
 
