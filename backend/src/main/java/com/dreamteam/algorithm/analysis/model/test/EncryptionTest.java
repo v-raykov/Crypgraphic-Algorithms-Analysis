@@ -19,20 +19,12 @@ public class EncryptionTest implements Test {
     private byte[] iv;
     private int ivSize;
 
-    public EncryptionTest(EncryptionTest test) {
-        this.algorithm = test.algorithm;
-        this.plaintext = test.getPlaintext();
-        this.encryptionKey = test.getEncryptionKey();
-        this.keySize = test.getKeySize();
-        this.iv = test.getIv();
-        this.ivSize = test.getIvSize();
-    }
-
     public EncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] encryptionKey, int keySize, byte[] iv) {
         this.algorithm = algorithm;
         this.plaintext = plaintext;
         this.encryptionKey = encryptionKey;
         this.keySize = keySize;
+        this.iv = iv;
         if (algorithm instanceof RequiresIv a) {
             this.ivSize = a.getIvSize();
         }

@@ -2,33 +2,40 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
-import com.dreamteam.algorithm.analysis.model.test.EncryptionTestResult;
+import com.dreamteam.algorithm.analysis.model.test.TestResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import static com.dreamteam.algorithm.analysis.web.service.algorithm.helper.SecurityAnalysisHelper.*;
 import static com.dreamteam.algorithm.analysis.web.service.algorithm.helper.TestExecutionHelper.*;
 
 @Service
 @RequiredArgsConstructor
-public class TestExecutionService {
-    public EncryptionTestResult testEncryption(EncryptionTest test) {
-        var result = new EncryptionTestResult(test);
+public class ExecutionService {
+    public TestResult testEncryption(EncryptionTest test) {
+        var result = new TestResult(test);
         var algorithm = test.getAlgorithm();
         applyInitializationVectorIfNeeded(algorithm, test.getIv());
         executeEncryptionTest(algorithm, test.getPlaintext(), test.getEncryptionKey(), result);
+        executeSecurityBenchmarks(result);
         return result;
     }
 
-    private void executeEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key, EncryptionTestResult result) {
+    private void executeSecurityBenchmarks(TestResult result) {
+        var cipherText = result.getCipherText();
+        result.setEntropy(calculateEntropy(cipherText));
+        result.setFrequencyScore(calculateFrequencyScore(cipherText));
+    }
+
+    private void executeEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key, TestResult result) {
         try {
             byte[] encrypted = encryptData(algorithm, plaintext, key, result);
             byte[] decrypted = decryptData(algorithm, encrypted, key, result);
             validateDecryption(decrypted, plaintext, algorithm.getName());
-
-            result.setResult(encodeBase64(encrypted));
+            result.setCipherText(encodeBase64(encrypted));
             result.setTimestamp(LocalDateTime.now());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -38,6 +45,5 @@ public class TestExecutionService {
     private String encodeBase64(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
     }
-
 
 }

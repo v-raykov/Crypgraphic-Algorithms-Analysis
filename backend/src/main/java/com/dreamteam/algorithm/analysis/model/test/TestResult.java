@@ -1,10 +1,36 @@
 package com.dreamteam.algorithm.analysis.model.test;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
-public interface TestResult {
-    String getResult();
-    void setResult(String encrypted);
-    LocalDateTime getTimestamp();
-    void setTimestamp(LocalDateTime timestamp);
+@NoArgsConstructor
+@Getter
+@Setter
+@Document
+public class TestResult {
+    @Id
+    private String id;
+
+    private Test test;
+
+    private String cipherText;
+
+    private long cipherTime;
+    private long decipherTime;
+    private long cipherMemory;
+    private long decipherMemory;
+
+    private double entropy;
+    private double frequencyScore;
+
+    private LocalDateTime timestamp;
+
+    public TestResult(Test test) {
+        this.test = test;
+    }
 }

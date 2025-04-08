@@ -3,7 +3,7 @@ package com.dreamteam.algorithm.analysis.config.jackson;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.model.test.Test;
-import com.dreamteam.algorithm.analysis.web.service.algorithm.TestingService;
+import com.dreamteam.algorithm.analysis.web.service.algorithm.TestService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ import java.util.Base64;
 @Component
 @RequiredArgsConstructor
 public class TestFactory {
-    private final TestingService testingService;
+    private final TestService testService;
 
     public Test createTestFromJson(JsonNode node) {
-        var algorithm = testingService.findAlgorithm(node.get("algorithm").asText());
+        var algorithm = testService.findAlgorithm(node.get("algorithm").asText());
         return switch (algorithm) {
             case EncryptionAlgorithm a -> createEncryptionTest(node, a);
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
