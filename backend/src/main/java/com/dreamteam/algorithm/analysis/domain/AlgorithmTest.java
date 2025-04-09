@@ -1,30 +1,44 @@
 package com.dreamteam.algorithm.analysis.domain;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.*;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes.MultipleFixedKeySizes;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes.SingleFixedKeySize;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Base64;
 
+import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
+
 public class AlgorithmTest {
-    private static final SecureRandom secureRandom = new SecureRandom();
     public static void main(String[] args) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
 
         testEncryption(new AdvancedEncryptionStandard());
         testEncryption(new DataEncryptionStandard());
-        testEncryption(new TwoFish());
         testEncryption(new TripleDES());
+        testEncryption(new TwoFish());
+        testEncryption(new BlowFish());
+        testEncryption(new Serpent());
+        testEncryption(new Camellia());
+        testEncryption(new Cast128());
+        testEncryption(new Cast256());
+        testEncryption(new Rc2());
+        testEncryption(new Rc5());
+        testEncryption(new Rc6());
+
 
 
     }
 
     private static void testEncryption(EncryptionAlgorithm algorithm) throws Exception {
         String originalString = algorithm.getName() + " is being tested.";
+        if (algorithm instanceof RequiresIv requiresIv) {
+            requiresIv.setIv(requiresIv.generateRandomIv());
+        }
         byte[] key = new byte[getKeySize(algorithm)];
         secureRandom.nextBytes(key);
         byte[] encrypted = algorithm.encrypt(originalString.getBytes(), key);
@@ -40,6 +54,7 @@ public class AlgorithmTest {
         return switch (algorithm) {
             case MultipleFixedKeySizes a -> a.getKeySizes().getFirst();
             case SingleFixedKeySize a -> a.getKeySize();
+            case VaryingKeySizes a -> a.getRandomKeySize();
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
         };
     }

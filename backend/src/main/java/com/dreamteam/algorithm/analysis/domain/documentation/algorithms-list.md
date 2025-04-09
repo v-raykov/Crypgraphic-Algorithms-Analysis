@@ -4,18 +4,18 @@
 These use the **same** key for both encryption and decryption.
 
 ### Block Ciphers
-- **AES (Advanced Encryption Standard)** – `16, 24, 32 bytes`
-- **DES (Data Encryption Standard)** – `8 bytes` (56 bits used + 8-bit parity)
-- **3DES (Triple DES)** – `24 bytes` (168 bits used + 24-bit parity)
-- **Blowfish** – `4–56 bytes`
-- **Twofish** – `16, 24, 32 bytes`
-- **Serpent** – `16, 24, 32 bytes`
-- **Camellia** – `16, 24, 32 bytes`
-- **CAST-128** – `5–16 bytes`
-- **CAST-256** – `16, 24, 32 bytes`
-- **RC2** – `1–16 bytes`
-- **RC5** – `0–255 bytes`
-- **RC6** – `16, 24, 32 bytes`
+- **AES (Advanced Encryption Standard)** – `16, 24, 32 bytes` ✔
+- **DES (Data Encryption Standard)** – `8 bytes` ✔
+- **3DES (Triple DES)** – `24 bytes` ✔
+- **Blowfish** – `4–56 bytes` ✔
+- **Twofish** – `16, 24, 32 bytes` ✔
+- **Serpent** – `16, 24, 32 bytes` ✔
+- **Camellia** – `16, 24, 32 bytes` ✔
+- **CAST-128** – `5–16 bytes` ✔
+- **CAST-256** – `16, 24, 32 bytes` ✔
+- **RC2** – `1–16 bytes` ✔
+- **RC5** – `5–255 bytes` ✔
+- **RC6** – `16, 24, 32 bytes` ✔
 - **IDEA (International Data Encryption Algorithm)** – `16 bytes`
 
 ### Stream Ciphers

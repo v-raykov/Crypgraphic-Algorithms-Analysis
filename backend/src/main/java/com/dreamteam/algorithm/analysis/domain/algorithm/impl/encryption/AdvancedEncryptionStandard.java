@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes.MultipleFixedKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,11 +13,11 @@ import java.util.List;
 
 @Component
 @Getter
-public class AdvancedEncryptionStandard implements EncryptionAlgorithm, RequiresIv, MultipleFixedKeySizes {
+@Setter
+public class AdvancedEncryptionStandard implements EncryptionAlgorithm, MultipleFixedKeySizes, RequiresIv {
 
     private final List<Integer> keySizes = List.of(16, 24, 32);
     private final int ivSize = 16;
-    @Setter
     private byte[] iv;
 
     public AdvancedEncryptionStandard() {
@@ -37,4 +37,10 @@ public class AdvancedEncryptionStandard implements EncryptionAlgorithm, Requires
         cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         return cipher.doFinal(data);
     }
+
+    @Override
+    public boolean isValidKeySize(int keySize) {
+        return keySizes.contains(keySize);
+    }
+
 }

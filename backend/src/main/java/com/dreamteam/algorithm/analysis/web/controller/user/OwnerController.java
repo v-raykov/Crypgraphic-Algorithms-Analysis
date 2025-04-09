@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,13 +25,13 @@ public class OwnerController {
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
         ownerService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/users/{id}/adminStatus/{isAdmin}")
-    public ResponseEntity<Void> toggleUserAdmin(@PathVariable UUID id, @PathVariable boolean isAdmin) {
+    public ResponseEntity<Void> toggleUserAdmin(@PathVariable String id, @PathVariable boolean isAdmin) {
         ownerService.toggleUserAdmin(id, isAdmin);
         return ResponseEntity.noContent().build();
     }

@@ -1,12 +1,16 @@
 package com.dreamteam.algorithm.analysis.config.exception.handler;
 
-import com.dreamteam.algorithm.analysis.config.exception.ForbiddenUserDeletionException;
-import com.dreamteam.algorithm.analysis.config.exception.IncorrectPasswordException;
-import com.dreamteam.algorithm.analysis.config.exception.UserNotFoundException;
+import com.dreamteam.algorithm.analysis.config.exception.InvalidKeySizeException;
 import com.dreamteam.algorithm.analysis.config.exception.UsernameExistsException;
+import com.dreamteam.algorithm.analysis.config.exception.not.found.AlgorithmNotFoundException;
+import com.dreamteam.algorithm.analysis.config.exception.not.found.AlgorithmTypeNotFoundException;
+import com.dreamteam.algorithm.analysis.config.exception.not.found.UserNotFoundException;
+import com.dreamteam.algorithm.analysis.config.exception.unauthorized.ForbiddenUserDeletionException;
+import com.dreamteam.algorithm.analysis.config.exception.unauthorized.IncorrectPasswordException;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +33,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage()));
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        var status = HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
         var status = HttpStatus.NOT_FOUND;
@@ -49,9 +59,27 @@ public class GlobalExceptionHandler {
 
     // Custom Exceptions
 
-    @ExceptionHandler(UsernameExistsException.class)
-    public ResponseEntity<ErrorResponse> handleUsernameExistsException(UsernameExistsException ex) {
-        var status = HttpStatus.CONFLICT;
+    @ExceptionHandler(AlgorithmNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAlgorithmDoesNotExistsException(AlgorithmNotFoundException ex) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
+    }
+
+    @ExceptionHandler(AlgorithmTypeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleAlgorithmTypeNotFoundException(AlgorithmTypeNotFoundException ex) {
+        var status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidKeySizeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidKeySizeException(InvalidKeySizeException ex) {
+        var status = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }
 
@@ -67,9 +95,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
-        var status = HttpStatus.NOT_FOUND;
+    @ExceptionHandler(UsernameExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameExistsException(UsernameExistsException ex) {
+        var status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }
 }

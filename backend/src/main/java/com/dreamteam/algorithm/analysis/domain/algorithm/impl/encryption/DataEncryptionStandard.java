@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes.SingleFixedKeySize;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,6 @@ import javax.crypto.spec.SecretKeySpec;
 @Component
 public class DataEncryptionStandard implements EncryptionAlgorithm, SingleFixedKeySize, RequiresIv {
     private final int keySize = 8;
-    private static final String ALGORITHM = "DES/CBC/PKCS5Padding";
     private final int ivSize = 8;
     private byte[] iv;
 
@@ -33,8 +32,14 @@ public class DataEncryptionStandard implements EncryptionAlgorithm, SingleFixedK
         return performCipherOperation(data, key, Cipher.DECRYPT_MODE);
     }
 
+    @Override
+    public boolean isValidKeySize(int keySize) {
+        return this.keySize == keySize;
+
+    }
+
     private Cipher initializeCipher(byte[] key, int mode) throws Exception {
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
         SecretKeySpec secretKey = new SecretKeySpec(key, "DES");
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         cipher.init(mode, secretKey, ivSpec);

@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes.MultipleFixedKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +38,12 @@ public class TwoFish implements EncryptionAlgorithm, MultipleFixedKeySizes, Requ
     public byte[] decrypt(byte[] data, byte[] key) throws InvalidCipherTextException {
         return processCipher(false, data, key);
     }
+
+    @Override
+    public boolean isValidKeySize(int keySize) {
+        return keySizes.contains(keySize);
+    }
+
 
     private byte[] processCipher(boolean encrypt, byte[] input, byte[] key) throws InvalidCipherTextException {
         PaddedBufferedBlockCipher cipher = new PaddedBufferedBlockCipher(CBCBlockCipher.newInstance(new TwofishEngine()));

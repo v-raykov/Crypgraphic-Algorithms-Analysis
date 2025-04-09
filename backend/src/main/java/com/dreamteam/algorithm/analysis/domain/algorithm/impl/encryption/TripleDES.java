@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.sizes.SingleFixedKeySize;
+import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
 import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 import org.springframework.stereotype.Component;
@@ -38,6 +38,12 @@ public class TripleDES implements EncryptionAlgorithm, SingleFixedKeySize, Requi
     public byte[] decrypt(byte[] data, byte[] key) throws InvalidCipherTextException {
         return processCipher(false, data, key);
     }
+
+    @Override
+    public boolean isValidKeySize(int keySize) {
+        return keySize == keySize;
+    }
+
 
     private byte[] processCipher(boolean encrypt, byte[] data, byte[] key) throws InvalidCipherTextException {
         BlockCipher engine = new DESedeEngine(); // Triple DES engine

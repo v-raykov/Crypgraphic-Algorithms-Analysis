@@ -4,9 +4,20 @@
   - `{username, password}`
 - /register (POST)
   - `{username, email, password`
-## Home
-- /
-  - Main page used for testing purposes. Currently returns `{response:"Hello World"}`
+## Algorithms
+- /algorithm (GET)
+- /algorithm/name/{name} (GET)
+- /algorithm/type/{type} (GET) 
+  - the type value should be the type field of the algorithm but in kebab case (e.g. "Key Derivation" -> key-derivation)
+
+## Test
+- /test (GET)
+- /test/{id} (GET)
+- /test (POST)
+  - has two required and many optional fields.
+  - required fields: `{algorithm, plaintext}`
+  - the optional fields depend on the algorithm type
+  - encryption optional fields: `encryptionKey, keySize, iv`
 
 ## User
 - /user (GET)

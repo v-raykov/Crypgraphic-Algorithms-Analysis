@@ -6,7 +6,7 @@
   let errorMessage = '';
 
   const fetchUserData = async () => {
-    const token = localStorage.getItem('token'); // ✅ Get stored JWT token
+    const token = localStorage.getItem('token'); // Get stored JWT token
 
     if (!token) {
       navigate('/login'); // Redirect if not logged in
@@ -16,14 +16,10 @@
     try {
       const response = await fetch('http://localhost:8080/user', {
         method: 'GET',
-  
-
-        headers: { 'Authorization': `Bearer ${token}` } // ✅ Send JWT token
-      },
+        headers: { 'Authorization': `Bearer ${token}` } // Send JWT token
+      },  
+   );
     
-    );
-        
-
       if (response.ok) {
         const data = await response.json();
         message = `Hello, ${data.username}!`;
@@ -39,7 +35,7 @@
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // ✅ Remove token on logout
+    localStorage.removeItem('token'); // Remove token on logout
     navigate('/login');
   };
 

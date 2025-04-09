@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.web.service.authentication;
 
 import com.dreamteam.algorithm.analysis.config.exception.UsernameExistsException;
-import com.dreamteam.algorithm.analysis.config.security.JwtUtils;
+import com.dreamteam.algorithm.analysis.config.security.jwt.JwtUtils;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.User;
 import com.dreamteam.algorithm.analysis.model.dto.LoginDto;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
