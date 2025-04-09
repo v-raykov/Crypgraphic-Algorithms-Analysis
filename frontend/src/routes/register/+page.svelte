@@ -1,4 +1,5 @@
 <script>
+	import { register } from '$lib/api.js';
   import './style.css';
   import { navigate } from 'svelte-routing';
 
@@ -19,16 +20,12 @@
     }
 
     try {
-      const response = await fetch('http://localhost:8080/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+      const response = await register(username, email, password);
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('token', data.token); // ✅ Store JWT token
+        localStorage.setItem('token', data.token); // Store JWT token
         navigate('/login');
         window.location.reload();
       } else {
