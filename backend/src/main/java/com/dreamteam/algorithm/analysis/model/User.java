@@ -2,7 +2,6 @@ package com.dreamteam.algorithm.analysis.model;
 
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
 import com.dreamteam.algorithm.analysis.model.dto.RegisterDto;
-import com.dreamteam.algorithm.analysis.model.test.TestResult;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,7 +28,7 @@ public class User implements UserDetails {
     private String email;
     private Role role;
 
-    private List<TestResult> testResults = new ArrayList<>();
+    private List<String> testResultIds = new ArrayList<>();
 
     public User(RegisterDto details) {
         username = details.getUsername();
@@ -51,5 +50,9 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public void addTestResultId(String id) {
+        testResultIds.add(id);
     }
 }

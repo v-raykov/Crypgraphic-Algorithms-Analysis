@@ -1,7 +1,10 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage;
 
+import com.dreamteam.algorithm.analysis.config.exception.not.found.TestResultNotFoundException;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.repository.TestResultRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
@@ -12,21 +15,31 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestScope
 public class SessionResultStorage implements ResultStorage {
+    @Getter
+    private final TestResultRepository resultRepository;
     private final HttpSession httpSession;
 
     @Override
-    public void addTestResult(TestResult result) {
-        getTestResults().add(result);
+    public TestResult addResult(TestResult result) {
+        getResults().add(result);
+        return result;
     }
 
     @Override
-    public List<TestResult> getTestResults() {
+    public List<TestResult> getResults() {
         var sessionData = (SessionData) httpSession.getAttribute("sessionData");
-        if (sessionData != null) {
-            return sessionData.getTestResults();
+        if (sessionData == null) {
+            httpSession.setAttribute("sessionData", new SessionData());
+            return getResults();
         }
-        httpSession.setAttribute("sessionData", new SessionData());
-        return ((SessionData) httpSession.getAttribute("sessionData")).getTestResults();
+        return sessionData.getTestResults();
     }
 
+    @Override
+    public TestResult getTestResultById(String id) {
+        return getResults().stream()
+                .filter(result -> result.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new TestResultNotFoundException(id));
+    }
 }

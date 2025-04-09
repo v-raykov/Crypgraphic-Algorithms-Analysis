@@ -16,7 +16,7 @@ public class Warmup {
 
     @PostConstruct
     public void init() {
-        var test = new EncryptionTest((EncryptionAlgorithm) algorithmService.findAlgorithm("blowFish"), "warmup");
+        var test = new EncryptionTest((EncryptionAlgorithm) algorithmService.getAlgorithmByName("blowFish"), "warmup");
         executionService.testEncryption(test);
     }
 }

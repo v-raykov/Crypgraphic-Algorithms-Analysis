@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.web.controller;
+package com.dreamteam.algorithm.analysis.web.controller.algorithm;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
@@ -26,7 +26,7 @@ public class AlgorithmController {
     @GetMapping("/name/{name}")
     public ResponseEntity<Algorithm> getAlgorithm(@PathVariable String name) {
         return ResponseEntity.ok()
-                .body(algorithmService.findAlgorithm(name));
+                .body(algorithmService.getAlgorithmByName(name));
     }
 
     @GetMapping("/type/{type}")

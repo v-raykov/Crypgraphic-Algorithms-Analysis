@@ -1,5 +1,6 @@
 package com.dreamteam.algorithm.analysis.model.test;
 
+import com.dreamteam.algorithm.analysis.model.dto.TestResultDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 public class TestResult {
     @Id
     private String id;
+
+    private String ownerId;
 
     private Test test;
 
@@ -32,5 +35,9 @@ public class TestResult {
 
     public TestResult(Test test) {
         this.test = test;
+    }
+
+    public TestResultDto toDto() {
+        return new TestResultDto(this);
     }
 }

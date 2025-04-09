@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class AlgorithmService {
     private final Map<String, Algorithm> algorithms;
 
-    public Algorithm findAlgorithm(String algorithmName) {
+    public Algorithm getAlgorithmByName(String algorithmName) {
         var algorithm = algorithms.get(algorithmName);
         if (algorithm == null) {
             throw new AlgorithmNotFoundException(algorithmName);

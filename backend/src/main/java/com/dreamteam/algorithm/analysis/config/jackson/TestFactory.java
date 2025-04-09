@@ -16,7 +16,7 @@ public class TestFactory {
     private final AlgorithmService algorithmService;
 
     public Test createTestFromJson(JsonNode node) {
-        var algorithm = algorithmService.findAlgorithm(node.get("algorithm").asText());
+        var algorithm = algorithmService.getAlgorithmByName(node.get("algorithm").asText());
         return switch (algorithm) {
             case EncryptionAlgorithm a -> createEncryptionTest(node, a);
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
