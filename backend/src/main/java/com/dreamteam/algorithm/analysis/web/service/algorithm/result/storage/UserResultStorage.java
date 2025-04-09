@@ -36,7 +36,7 @@ public class UserResultStorage implements ResultStorage {
     }
 
     @Override
-    public TestResult getTestResultById(String id) {
+    public TestResult getResultById(String id) {
         return resultRepository.findByOwnerIdAndId(user.getId(), id)
                 .orElseThrow(() -> new TestResultNotFoundException(id));
     }

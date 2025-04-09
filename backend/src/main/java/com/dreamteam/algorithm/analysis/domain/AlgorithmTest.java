@@ -8,12 +8,12 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Base64;
 
+import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
+
 public class AlgorithmTest {
-    private static final SecureRandom secureRandom = new SecureRandom();
     public static void main(String[] args) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
 

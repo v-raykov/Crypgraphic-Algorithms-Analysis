@@ -3,6 +3,7 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.test.benchmark.SecurityBenchmark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,13 @@ public class ExecutionService {
 
     private void executeSecurityBenchmarks(TestResult result) {
         var cipherText = result.getCipherText();
-        result.setEntropy(calculateEntropy(cipherText));
-        result.setFrequencyScore(calculateFrequencyScore(cipherText));
+        result.setSecurity(new SecurityBenchmark(calculateEntropy(cipherText), calculateFrequencyScore(cipherText)));
     }
 
     private void executeEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key, TestResult result) {
         try {
-            byte[] encrypted = encryptData(algorithm, plaintext, key, result);
-            byte[] decrypted = decryptData(algorithm, encrypted, key, result);
+            byte[] encrypted = encryptData(algorithm, plaintext, key, result.getPerformance());
+            byte[] decrypted = decryptData(algorithm, encrypted, key, result.getPerformance());
             validateDecryption(decrypted, plaintext, algorithm.getName());
             result.setCipherText(encodeBase64(encrypted));
             result.setTimestamp(LocalDateTime.now());

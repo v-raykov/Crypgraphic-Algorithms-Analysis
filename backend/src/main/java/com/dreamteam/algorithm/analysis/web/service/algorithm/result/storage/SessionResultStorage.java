@@ -2,10 +2,9 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage;
 
 import com.dreamteam.algorithm.analysis.config.exception.not.found.TestResultNotFoundException;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
-import com.dreamteam.algorithm.analysis.repository.TestResultRepository;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -15,12 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestScope
 public class SessionResultStorage implements ResultStorage {
-    @Getter
-    private final TestResultRepository resultRepository;
     private final HttpSession httpSession;
 
     @Override
     public TestResult addResult(TestResult result) {
+        result.setId(new ObjectId().toHexString());
         getResults().add(result);
         return result;
     }
@@ -36,7 +34,7 @@ public class SessionResultStorage implements ResultStorage {
     }
 
     @Override
-    public TestResult getTestResultById(String id) {
+    public TestResult getResultById(String id) {
         return getResults().stream()
                 .filter(result -> result.getId().equals(id))
                 .findFirst()

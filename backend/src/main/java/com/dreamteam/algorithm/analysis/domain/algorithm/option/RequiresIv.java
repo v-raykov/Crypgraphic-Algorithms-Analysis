@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.option;
 
-import java.security.SecureRandom;
+import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
 
 public interface RequiresIv {
     int getIvSize();
@@ -8,7 +8,7 @@ public interface RequiresIv {
     void setIv(byte[] iv);
     default byte[] generateRandomIv() {
         byte[] iv = new byte[getIvSize()];
-        new SecureRandom().nextBytes(iv);
+        secureRandom.nextBytes(iv);
         return iv;
     }
 }

@@ -9,7 +9,9 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySize
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.security.SecureRandom;
+import java.util.List;
+
+import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
 
 @JsonDeserialize(using = TestDeserializer.class)
 @JsonSerialize(using = TestSerializer.class)
@@ -21,16 +23,20 @@ public interface Test {
 
     default byte[] getKey(int keySize) {
         var key = new byte[keySize];
-        new SecureRandom().nextBytes(key);
+        secureRandom.nextBytes(key);
         return key;
     }
 
     default int getKeySize(Algorithm algorithm) {
         return switch (algorithm) {
-            case MultipleFixedKeySizes a -> a.getKeySizes().getFirst();
+            case MultipleFixedKeySizes a -> getRandomElement(a.getKeySizes());
             case SingleFixedKeySize a -> a.getKeySize();
             case VaryingKeySizes a -> a.getRandomKeySize();
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
         };
+    }
+
+    private int getRandomElement(List<Integer> list) {
+        return list.get(secureRandom.nextInt(list.size()));
     }
 }

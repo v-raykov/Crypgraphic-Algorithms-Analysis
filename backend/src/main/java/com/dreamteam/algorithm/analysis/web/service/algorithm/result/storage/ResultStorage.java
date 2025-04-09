@@ -7,5 +7,5 @@ import java.util.List;
 public interface ResultStorage {
     TestResult addResult(TestResult result);
     List<TestResult> getResults();
-    TestResult getTestResultById(String id);
+    TestResult getResultById(String id);
 }
