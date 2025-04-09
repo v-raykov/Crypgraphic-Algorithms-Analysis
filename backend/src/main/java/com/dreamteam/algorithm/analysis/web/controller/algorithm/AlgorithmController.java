@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AlgorithmController {
     private final AlgorithmService algorithmService;
+
     @GetMapping
     public ResponseEntity<List<Algorithm>> getAlgorithms() {
         return ResponseEntity.ok()
