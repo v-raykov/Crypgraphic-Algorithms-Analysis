@@ -16,7 +16,7 @@
     try {
       const response = await fetch('http://localhost:8080/user', {
         method: 'GET',
-        mode: 'no-cors', // Disable CORS
+  
 
         headers: { 'Authorization': `Bearer ${token}` } // ✅ Send JWT token
       },
@@ -56,3 +56,4 @@
     {/if}
   </div>
 </main>
+<p><a href="/change-password">Change Password</a></p>

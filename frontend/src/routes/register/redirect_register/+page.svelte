@@ -1,7 +1,7 @@
 <script>
     import { Router, Route, Link } from 'svelte-routing';
-    import login from '../login/+page.svelte';
-    import register from '../register/+page.svelte';
+    import login from '../../login/+page.svelte';
+    import register from '../+page.svelte';
   </script>
   
   <Router>
