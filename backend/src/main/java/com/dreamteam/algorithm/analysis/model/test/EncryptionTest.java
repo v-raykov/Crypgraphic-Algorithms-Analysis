@@ -3,7 +3,6 @@ package com.dreamteam.algorithm.analysis.model.test;
 import com.dreamteam.algorithm.analysis.config.exception.InvalidKeySizeException;
 import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,9 +26,7 @@ public class EncryptionTest implements Test {
         this.encryptionKey = encryptionKey;
         this.keySize = keySize;
         this.iv = iv;
-        if (algorithm instanceof RequiresIv a) {
-            this.ivSize = a.getIvSize();
-        }
+        this.ivSize = algorithm.getIvSize();
         setDefaultValues();
     }
 
@@ -46,13 +43,6 @@ public class EncryptionTest implements Test {
         } else {
             keySize = encryptionKey.length;
         }
-        if (algorithm instanceof RequiresIv a) {
-            setDefaultIv(a);
-        }
-    }
-
-    private void setDefaultIv(RequiresIv algorithm) {
-        ivSize = algorithm.getIvSize();
         if (iv == null) {
             iv = algorithm.generateRandomIv();
         }

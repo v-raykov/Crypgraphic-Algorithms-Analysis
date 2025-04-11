@@ -4,7 +4,6 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.*;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
-import com.dreamteam.algorithm.analysis.domain.algorithm.option.RequiresIv;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.nio.charset.StandardCharsets;
@@ -36,13 +35,11 @@ public class AlgorithmTest {
 
     private static void testEncryption(EncryptionAlgorithm algorithm) throws Exception {
         String originalString = algorithm.getName() + " is being tested.";
-        if (algorithm instanceof RequiresIv requiresIv) {
-            requiresIv.setIv(requiresIv.generateRandomIv());
-        }
         byte[] key = new byte[getKeySize(algorithm)];
+        byte[] iv = algorithm.generateRandomIv();
         secureRandom.nextBytes(key);
-        byte[] encrypted = algorithm.encrypt(originalString.getBytes(), key);
-        byte[] decrypted = algorithm.decrypt(encrypted, key);
+        byte[] encrypted = algorithm.encrypt(originalString.getBytes(), key, iv);
+        byte[] decrypted = algorithm.decrypt(encrypted, key, iv);
 
         System.out.println("Original: " + originalString);
         System.out.println("Encrypted: " + Base64.getEncoder().encodeToString(encrypted));

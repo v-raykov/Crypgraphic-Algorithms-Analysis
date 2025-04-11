@@ -8,7 +8,4 @@ public interface VaryingKeySizes {
     default int getRandomKeySize() {
         return new Random().nextInt(getMinKeySize(), getMaxKeySize());
     }
-    default boolean isValidKey(byte[] key) {
-        return key.length >= getMinKeySize() && key.length <= getMaxKeySize();
-    }
 }

@@ -19,8 +19,7 @@ public class ExecutionService {
     public TestResult testEncryption(EncryptionTest test) {
         var result = new TestResult(test);
         var algorithm = test.getAlgorithm();
-        applyInitializationVectorIfNeeded(algorithm, test.getIv());
-        executeEncryptionTest(algorithm, test.getPlaintext(), test.getEncryptionKey(), result);
+        executeEncryptionTest(algorithm, test.getPlaintext(), test.getEncryptionKey(), test.getIv(), result);
         executeSecurityBenchmarks(result);
         return result;
     }
@@ -30,10 +29,10 @@ public class ExecutionService {
         result.setSecurity(new SecurityBenchmark(calculateEntropy(cipherText), calculateFrequencyScore(cipherText)));
     }
 
-    private void executeEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key, TestResult result) {
+    private void executeEncryptionTest(EncryptionAlgorithm algorithm, String plaintext, byte[] key, byte[] iv, TestResult result) {
         try {
-            byte[] encrypted = encryptData(algorithm, plaintext, key, result.getPerformance());
-            byte[] decrypted = decryptData(algorithm, encrypted, key, result.getPerformance());
+            byte[] encrypted = encryptData(algorithm, plaintext, key, iv, result.getPerformance());
+            byte[] decrypted = decryptData(algorithm, encrypted, key, iv, result.getPerformance());
             validateDecryption(decrypted, plaintext, algorithm.getName());
             result.setCipherText(encodeBase64(encrypted));
             result.setTimestamp(LocalDateTime.now());
