@@ -19,7 +19,7 @@ public class TestService {
 
     public TestResultDto testAlgorithm(Test test) {
         var result = switch (test) {
-            case EncryptionTest t -> testService.testEncryption(t);
+            case EncryptionTest<?> t -> testService.testEncryption(t);
             default -> throw new IllegalStateException("Unexpected value: " + test);
         };
         return modelMapper.map(resultStorage.addResult(result), TestResultDto.class);

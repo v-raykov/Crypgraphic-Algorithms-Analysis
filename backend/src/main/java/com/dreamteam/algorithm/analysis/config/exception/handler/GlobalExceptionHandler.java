@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.config.exception.handler;
 
-import com.dreamteam.algorithm.analysis.config.exception.InvalidKeySizeException;
+import com.dreamteam.algorithm.analysis.config.exception.InvalidParameterException;
 import com.dreamteam.algorithm.analysis.config.exception.UsernameExistsException;
 import com.dreamteam.algorithm.analysis.config.exception.not.found.AlgorithmNotFoundException;
 import com.dreamteam.algorithm.analysis.config.exception.not.found.AlgorithmTypeNotFoundException;
@@ -77,8 +77,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }
 
-    @ExceptionHandler(InvalidKeySizeException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidKeySizeException(InvalidKeySizeException ex) {
+    @ExceptionHandler(InvalidParameterException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidKeySizeException(InvalidParameterException ex) {
         var status = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }

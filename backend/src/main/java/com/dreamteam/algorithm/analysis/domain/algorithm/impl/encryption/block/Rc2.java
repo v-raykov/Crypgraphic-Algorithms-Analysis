@@ -1,4 +1,4 @@
-package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption;
+package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class Rc2 extends EncryptionAlgorithm implements VaryingKeySizes {
+public class Rc2 extends BlockCipherEncryptionAlgorithm implements VaryingKeySizes {
     private final int minKeySize = 1;
     private final int maxKeySize = 16;
     private final int ivSize = 8;

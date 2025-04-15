@@ -3,7 +3,7 @@ package com.dreamteam.algorithm.analysis.domain.algorithm;
 import com.dreamteam.algorithm.analysis.config.exception.not.found.AlgorithmTypeNotFoundException;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.KeyDerivationAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.DigitalSignatureAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block.BlockCipherEncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.hash.HashAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.homomorphic.HomomorphicEncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.key.exchange.KeyExchangeAlgorithm;
@@ -45,7 +45,7 @@ public enum AlgorithmType {
         return switch (algorithm) {
             case KeyDerivationAlgorithm ignored -> KEY_DERIVATION;
             case DigitalSignatureAlgorithm ignored -> DIGITAL_SIGNATURE;
-            case EncryptionAlgorithm ignored -> ENCRYPTION;
+            case BlockCipherEncryptionAlgorithm ignored -> ENCRYPTION;
             case HashAlgorithm ignored -> HASHING;
             case HomomorphicEncryptionAlgorithm ignored -> HOMOMORPHIC_ENCRYPTION;
             case KeyExchangeAlgorithm ignored -> KEY_EXCHANGE;
