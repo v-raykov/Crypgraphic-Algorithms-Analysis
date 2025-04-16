@@ -5,10 +5,8 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.Encrypt
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionParameters;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class EncryptionTest<T extends EncryptionParameters> implements Test {
     private EncryptionAlgorithm<T> algorithm;
