@@ -9,4 +9,5 @@ public interface Algorithm {
         var className = getClass().getSimpleName();
         return Character.toLowerCase(className.charAt(0)) + className.substring(1);
     }
+    AlgorithmType getType();
 }

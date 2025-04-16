@@ -1,5 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block;
 
+import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;
@@ -12,6 +13,11 @@ import java.util.Arrays;
 import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
 
 public abstract class BlockCipherEncryptionAlgorithm implements EncryptionAlgorithm<BlockCipherEncryptionParameters> {
+
+    @Override
+    public AlgorithmType getType() {
+        return AlgorithmType.BLOCK_CIPHER_ENCRYPTION;
+    }
 
     @Override
     public byte[] encrypt(byte[] data, BlockCipherEncryptionParameters parameters) throws Exception {

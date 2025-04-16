@@ -18,7 +18,8 @@ import java.util.Map;
 public enum AlgorithmType {
     KEY_DERIVATION("Key Derivation", "key-derivation" ),
     DIGITAL_SIGNATURE("Digital Signature", "digital-signature"),
-    ENCRYPTION("Encryption", "encryption"),
+    BLOCK_CIPHER_ENCRYPTION("Block Cipher Encryption", "block-encryption"),
+    STREAM_CIPHER_ENCRYPTION("Stream Cipher Encryption", "stream-encryption"),
     HASHING("Hashing", "hashing"),
     HOMOMORPHIC_ENCRYPTION("Homomorphic Encryption", "homomorphic-encryption"),
     KEY_EXCHANGE("Key Exchange", "key-exchange"),
@@ -45,7 +46,7 @@ public enum AlgorithmType {
         return switch (algorithm) {
             case KeyDerivationAlgorithm ignored -> KEY_DERIVATION;
             case DigitalSignatureAlgorithm ignored -> DIGITAL_SIGNATURE;
-            case BlockCipherEncryptionAlgorithm ignored -> ENCRYPTION;
+            case BlockCipherEncryptionAlgorithm ignored -> BLOCK_CIPHER_ENCRYPTION;
             case HashAlgorithm ignored -> HASHING;
             case HomomorphicEncryptionAlgorithm ignored -> HOMOMORPHIC_ENCRYPTION;
             case KeyExchangeAlgorithm ignored -> KEY_EXCHANGE;

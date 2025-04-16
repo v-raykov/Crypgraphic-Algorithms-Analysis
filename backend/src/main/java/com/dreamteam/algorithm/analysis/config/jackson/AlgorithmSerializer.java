@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 public class AlgorithmSerializer extends JsonSerializer<Algorithm> {
-    private static final List<String> excludedFields = List.of("randomKey", "iv", "engine");
+    private static final List<String> excludedFields = List.of(FieldNames.RANDOM_KEY.toString(), FieldNames.ENGINE.toString());
 
     @Override
     public void serialize(Algorithm algorithm, JsonGenerator gen, SerializerProvider serializers) throws IOException {

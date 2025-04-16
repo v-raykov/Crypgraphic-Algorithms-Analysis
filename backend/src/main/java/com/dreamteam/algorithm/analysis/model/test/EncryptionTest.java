@@ -1,6 +1,5 @@
 package com.dreamteam.algorithm.analysis.model.test;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionParameters;
 import lombok.Getter;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EncryptionTest<T extends EncryptionParameters> implements Test {
     private EncryptionAlgorithm<T> algorithm;
-    private final String type = AlgorithmType.ENCRYPTION.toString();
 
     private String plaintext;
     private T parameters;
