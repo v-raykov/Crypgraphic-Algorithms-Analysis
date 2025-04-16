@@ -6,16 +6,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class TestDeserializer extends JsonDeserializer<Test> {
     private final TestFactory factory;
-
-    public TestDeserializer(TestFactory factory) {
-        this.factory = factory;
-    }
 
     @Override
     public Test deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
