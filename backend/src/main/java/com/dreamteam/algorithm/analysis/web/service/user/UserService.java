@@ -9,18 +9,18 @@ import com.dreamteam.algorithm.analysis.model.requests.change.PasswordChangeRequ
 import com.dreamteam.algorithm.analysis.model.requests.change.UsernameChangeRequest;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.modelMapper;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -2,13 +2,16 @@ package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block;
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionParameters;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
 
@@ -17,6 +20,12 @@ public abstract class BlockCipherEncryptionAlgorithm implements EncryptionAlgori
     @Override
     public AlgorithmType getType() {
         return AlgorithmType.BLOCK_CIPHER_ENCRYPTION;
+    }
+
+    @Override
+    public Field[] getFields() {
+        return Stream.concat(Arrays.stream(BlockCipherEncryptionParameters.class.getDeclaredFields()), Arrays.stream(EncryptionParameters.class.getDeclaredFields()))
+                .toArray(Field[]::new);
     }
 
     @Override

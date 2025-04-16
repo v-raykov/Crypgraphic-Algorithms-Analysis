@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.web.controller.algorithm;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.model.dto.AlgorithmDto;
 import com.dreamteam.algorithm.analysis.web.service.algorithm.AlgorithmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +19,19 @@ public class AlgorithmController {
     private final AlgorithmService algorithmService;
 
     @GetMapping
-    public ResponseEntity<List<Algorithm>> getAlgorithms() {
+    public ResponseEntity<List<AlgorithmDto>> getAlgorithms() {
         return ResponseEntity.ok()
                 .body(algorithmService.getAlgorithms());
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Algorithm> getAlgorithm(@PathVariable String name) {
+    public ResponseEntity<AlgorithmDto> getAlgorithm(@PathVariable String name) {
         return ResponseEntity.ok()
-                .body(algorithmService.getAlgorithmByName(name));
+                .body(algorithmService.getAlgorithmDtoByName(name));
     }
 
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<Algorithm>> getAlgorithmsByType(@PathVariable String type) {
+    public ResponseEntity<List<AlgorithmDto>> getAlgorithmsByType(@PathVariable String type) {
         return ResponseEntity.ok()
                 .body(algorithmService.getAlgorithmsByType(AlgorithmType.fromEndpoint(type)));
     }

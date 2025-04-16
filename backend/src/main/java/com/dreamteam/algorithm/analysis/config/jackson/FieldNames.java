@@ -6,9 +6,7 @@ public enum FieldNames {
     ENCRYPTION_KEY_SIZE("encryptionKeySize"),
     PARAMETERS("parameters"),
     IV("iv"),
-    PLAINTEXT("plaintext"),
-    RANDOM_KEY("randomKey"),
-    ENGINE("engine");
+    PLAINTEXT("plaintext");
 
     private final String fieldName;
 
