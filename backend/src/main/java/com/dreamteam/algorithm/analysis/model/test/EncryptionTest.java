@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EncryptionTest<T extends EncryptionParameters> implements Test {
+public class EncryptionTest<T extends EncryptionParameters> extends Test {
     private EncryptionAlgorithm<T> algorithm;
 
     private String plaintext;

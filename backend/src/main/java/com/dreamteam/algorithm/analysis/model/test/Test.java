@@ -8,6 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonDeserialize(using = TestDeserializer.class)
 @JsonSerialize(using = TestSerializer.class)
-public interface Test {
-   Algorithm getAlgorithm();
+public abstract class Test {
+   public abstract Algorithm getAlgorithm();
 }
