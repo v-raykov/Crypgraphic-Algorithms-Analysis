@@ -31,4 +31,5 @@ public class StreamCipherEncryptionAlgorithm implements EncryptionAlgorithm<Stre
     public boolean isValidKeySize(int keySize) {
         return false;
     }
+
 }

@@ -1,6 +1,8 @@
 package com.dreamteam.algorithm.analysis.domain;
 
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.RSA;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block.*;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.stream.RC4;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
 import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
@@ -26,6 +28,7 @@ public class AlgorithmTest {
         testEncryption(new Rc2());
         testEncryption(new Rc5());
         testEncryption(new Rc6());
+
 
 
 
@@ -57,3 +60,5 @@ public class AlgorithmTest {
         };
     }
 }
+
+
