@@ -3,10 +3,15 @@ package com.dreamteam.algorithm.analysis.config.jackson;
 public enum FieldNames {
     ALGORITHM("algorithm"),
     ENCRYPTION_KEY("encryptionKey"),
-    ENCRYPTION_KEY_SIZE("encryptionKeySize"),
+    KEY_SIZE("keySize"),
     PARAMETERS("parameters"),
     IV("iv"),
-    PLAINTEXT("plaintext");
+    SALT("salt"),
+    PLAINTEXT("plaintext"),
+    COST_FACTOR("costFactor"),
+    BLOCK_SIZE("blockSize"),
+    PARALLELIZATION("parallelization"),
+    ITERATIONS("iterations");
 
     private final String fieldName;
 

@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.homomorphic;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
 
 import java.lang.reflect.Field;
 

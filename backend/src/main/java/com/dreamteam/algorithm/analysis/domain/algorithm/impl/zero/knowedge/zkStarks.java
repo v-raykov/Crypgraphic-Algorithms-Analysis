@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.zero.knowedge;
 
 import org.springframework.stereotype.Component;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.key.size.VaryingKeySizes;
 import lombok.Data;
 
 @Data

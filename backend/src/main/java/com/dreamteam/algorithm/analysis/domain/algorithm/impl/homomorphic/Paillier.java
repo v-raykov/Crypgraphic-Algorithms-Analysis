@@ -1,12 +1,8 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.homomorphic;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
 import org.springframework.stereotype.Component;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.homomorphic.HomomorphicEncryptionAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.key.size.VaryingKeySizes;
 import lombok.Data;
-
-import java.lang.reflect.Field;
 
 @Data
 @Component

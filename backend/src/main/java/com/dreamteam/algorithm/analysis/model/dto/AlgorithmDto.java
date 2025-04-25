@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.model.dto;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
 import lombok.Getter;
 
 import java.util.List;

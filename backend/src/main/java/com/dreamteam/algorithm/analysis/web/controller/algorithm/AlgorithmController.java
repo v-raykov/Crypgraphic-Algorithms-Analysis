@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.web.controller.algorithm;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
 import com.dreamteam.algorithm.analysis.model.dto.AlgorithmDto;
 import com.dreamteam.algorithm.analysis.web.service.algorithm.AlgorithmService;
 import lombok.RequiredArgsConstructor;

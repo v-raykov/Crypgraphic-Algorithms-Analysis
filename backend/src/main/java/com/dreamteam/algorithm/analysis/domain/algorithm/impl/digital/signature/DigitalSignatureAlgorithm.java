@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
 import org.bouncycastle.crypto.CryptoException;
 
 import java.io.IOException;
@@ -20,7 +20,4 @@ public interface DigitalSignatureAlgorithm extends Algorithm {
      default Field[] getFields() {
         return new Field[0];
     }
-
-
-
 }

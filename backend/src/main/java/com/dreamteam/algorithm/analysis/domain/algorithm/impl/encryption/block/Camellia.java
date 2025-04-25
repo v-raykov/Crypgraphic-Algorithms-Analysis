@@ -1,6 +1,7 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.BlockCipherEncryptionAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.key.size.MultipleFixedKeySizes;
 import lombok.Getter;
 import lombok.Setter;
 import org.bouncycastle.crypto.BlockCipher;
@@ -14,12 +15,8 @@ import java.util.List;
 @Setter
 public class Camellia extends BlockCipherEncryptionAlgorithm implements MultipleFixedKeySizes {
     private final List<Integer> keySizes = List.of(16, 24, 32);
+
     private final int ivSize = 16;
 
     private final BlockCipher engine = new CamelliaEngine();
-
-    @Override
-    public boolean isValidKeySize(int keySize) {
-        return keySizes.contains(keySize);
-    }
 }

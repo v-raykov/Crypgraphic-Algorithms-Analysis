@@ -1,16 +1,15 @@
 package com.dreamteam.algorithm.analysis.domain;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.RSA;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.key.size.MultipleFixedKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.key.size.SingleFixedKeySize;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.key.size.VaryingKeySizes;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.BlockCipherEncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block.*;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.stream.RC4;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.MultipleFixedKeySizes;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.SingleFixedKeySize;
-import com.dreamteam.algorithm.analysis.domain.algorithm.key.size.VaryingKeySizes;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Security;
 
-import static com.dreamteam.algorithm.analysis.config.GlobalStaticConstants.secureRandom;
+import static com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.AlgorithmUtilities.secureRandom;
 
 public class AlgorithmTest {
     public static void main(String[] args) throws Exception {

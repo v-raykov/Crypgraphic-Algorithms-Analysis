@@ -2,6 +2,7 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm;
 
 import com.dreamteam.algorithm.analysis.model.dto.TestResultDto;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
+import com.dreamteam.algorithm.analysis.model.test.KeyDerivationTest;
 import com.dreamteam.algorithm.analysis.model.test.Test;
 import com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage.ResultStorage;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class TestService {
     public TestResultDto testAlgorithm(Test test) {
         var result = switch (test) {
             case EncryptionTest<?> t -> testService.testEncryption(t);
+            case KeyDerivationTest<?> t -> testService.testKeyDerivation(t);
             default -> throw new IllegalStateException("Unexpected value: " + test);
         };
         return modelMapper.map(resultStorage.addResult(result), TestResultDto.class);

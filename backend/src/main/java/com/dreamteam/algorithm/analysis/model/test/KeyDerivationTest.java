@@ -1,0 +1,16 @@
+package com.dreamteam.algorithm.analysis.model.test;
+
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.KeyDerivationAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.parameter.KeyDerivationParameters;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class KeyDerivationTest<P extends KeyDerivationParameters> extends Test {
+    private KeyDerivationAlgorithm<P> algorithm;
+    private String plaintext;
+    private P parameters;
+}

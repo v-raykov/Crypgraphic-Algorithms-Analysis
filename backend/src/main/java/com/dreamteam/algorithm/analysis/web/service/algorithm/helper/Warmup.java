@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm.helper;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.EncryptionParametersFactory;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.block.BlockCipherEncryptionAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.parameter.EncryptionParametersFactory;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.BlockCipherEncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.web.service.algorithm.AlgorithmService;
 import com.dreamteam.algorithm.analysis.web.service.algorithm.ExecutionService;

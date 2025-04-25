@@ -1,18 +1,20 @@
 package com.dreamteam.algorithm.analysis.config.jackson;
 
-import com.dreamteam.algorithm.analysis.config.jackson.test.TestDeserializer;
-import com.dreamteam.algorithm.analysis.config.jackson.test.TestFactory;
-import com.dreamteam.algorithm.analysis.model.test.Test;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
+import com.dreamteam.algorithm.analysis.web.service.algorithm.AlgorithmService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.function.Function;
+
 @Configuration
+@RequiredArgsConstructor
 public class JacksonConfig {
+    private final AlgorithmService algorithmService;
+
     @Bean
-    public SimpleModule testModule(TestFactory testFactory) {
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(Test.class, new TestDeserializer(testFactory));
-        return module;
+    public Function<String, Algorithm> getAlgorithmByName() {
+        return algorithmService::getAlgorithmByName;
     }
 }

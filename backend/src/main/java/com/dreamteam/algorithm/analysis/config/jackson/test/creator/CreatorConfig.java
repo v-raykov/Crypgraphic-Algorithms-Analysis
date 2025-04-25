@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.config.jackson.test.creator;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,8 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm;
 
 import com.dreamteam.algorithm.analysis.config.exception.not.found.AlgorithmNotFoundException;
-import com.dreamteam.algorithm.analysis.domain.algorithm.Algorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.AlgorithmType;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
 import com.dreamteam.algorithm.analysis.model.dto.AlgorithmDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
