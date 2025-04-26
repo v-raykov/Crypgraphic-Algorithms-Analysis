@@ -1,9 +1,13 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm;
 
+import com.dreamteam.algorithm.analysis.config.exception.InvalidParameterException;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.KeyDerivationAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.parameter.KeyDerivationParameters;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.DigitalSignatureAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.parameter.DigitalSignatureKeyPair;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.parameter.EncryptionParameters;
+import com.dreamteam.algorithm.analysis.model.test.DigitalSignatureTest;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.model.test.KeyDerivationTest;
 import com.dreamteam.algorithm.analysis.model.test.TestResult;
@@ -24,9 +28,36 @@ public class ExecutionService {
     public <P extends EncryptionParameters> TestResult testEncryption(EncryptionTest<P> test) {
         var result = new TestResult(test);
         var algorithm = test.getAlgorithm();
-        executeEncryptionTest(algorithm, test.getPlaintext().getBytes(), test.getParameters(), result);
+        executeEncryptionTest(algorithm, test.getData().getBytes(), test.getParameters(), result);
         executeSecurityBenchmarks(result);
         return result;
+    }
+
+    public <P extends KeyDerivationParameters> TestResult testKeyDerivation(KeyDerivationTest<P> test) {
+        var result = new TestResult(test);
+        var algorithm = test.getAlgorithm();
+        executeKeyDerivationTest(algorithm, test.getData().getBytes(), test.getParameters(), result);
+        executeSecurityBenchmarks(result);
+        return result;
+    }
+
+    public TestResult testDigitalSignature(DigitalSignatureTest test) {
+        var result = new TestResult(test);
+        var algorithm = test.getAlgorithm();
+        executeDigitalSignatureTest(algorithm, test.getData().getBytes(), test.getKeyPair(), result);
+        executeSecurityBenchmarks(result);
+        return result;
+    }
+
+    private void executeDigitalSignatureTest(DigitalSignatureAlgorithm algorithm, byte[] bytes, DigitalSignatureKeyPair keyPair, TestResult result) {
+        try {
+            byte[] signature = signData(algorithm, bytes, keyPair, result.getPerformance());
+            validateSignature(algorithm, bytes, signature, keyPair, result.getPerformance());
+            result.setCipherText(encodeBase64(signature));
+            result.setTimestamp(LocalDateTime.now());
+        } catch (Exception e) {
+            throw new InvalidParameterException(algorithm.getName(), e);
+        }
     }
 
     private <P extends EncryptionParameters> void executeEncryptionTest(EncryptionAlgorithm<P> algorithm, byte[] data, P parameters, TestResult result) {
@@ -37,16 +68,8 @@ public class ExecutionService {
             result.setCipherText(encodeBase64(encrypted));
             result.setTimestamp(LocalDateTime.now());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InvalidParameterException(algorithm.getName(), e);
         }
-    }
-
-    public <P extends KeyDerivationParameters> TestResult testKeyDerivation(KeyDerivationTest<P> test) {
-        var result = new TestResult(test);
-        var algorithm = test.getAlgorithm();
-        executeKeyDerivationTest(algorithm, test.getPlaintext().getBytes(), test.getParameters(), result);
-        executeSecurityBenchmarks(result);
-        return result;
     }
 
     private <P extends KeyDerivationParameters> void executeKeyDerivationTest(KeyDerivationAlgorithm<P> algorithm, byte[] data, P parameters, TestResult result) {
@@ -55,7 +78,7 @@ public class ExecutionService {
             result.setCipherText(encodeBase64(key));
             result.setTimestamp(LocalDateTime.now());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new InvalidParameterException(algorithm.getName(), e);
         }
     }
 

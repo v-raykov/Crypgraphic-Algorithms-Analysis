@@ -30,11 +30,12 @@ public class AlgorithmUtilities {
     }
 
     public static void validateKeySize(Algorithm algorithm, int keySize) {
-        if (!(algorithm instanceof KeySizes a)) {
-            throw new FaultyAlgorithmException(algorithm.getName());
-        }
-        if (!a.isValidKeySize(keySize)) {
-            throw new InvalidParameterException(algorithm.getName(), "keySize", keySize);
+        try {
+            if (!((KeySizes) algorithm).isValidKeySize(keySize)) {
+                throw new InvalidParameterException(algorithm.getName(), "keySize", keySize);
+            }
+        } catch (ClassCastException e) {
+            throw new FaultyAlgorithmException(algorithm.getName(), e);
         }
     }
 

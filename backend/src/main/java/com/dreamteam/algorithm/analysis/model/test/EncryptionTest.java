@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EncryptionTest<P extends EncryptionParameters> extends Test {
     private EncryptionAlgorithm<P> algorithm;
-    private String plaintext;
+    private String data;
     private P parameters;
 }

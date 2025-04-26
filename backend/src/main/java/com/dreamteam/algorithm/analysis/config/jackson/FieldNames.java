@@ -7,11 +7,14 @@ public enum FieldNames {
     PARAMETERS("parameters"),
     IV("iv"),
     SALT("salt"),
-    PLAINTEXT("plaintext"),
+    DATA("data"),
     COST_FACTOR("costFactor"),
     BLOCK_SIZE("blockSize"),
     PARALLELIZATION("parallelization"),
-    ITERATIONS("iterations");
+    ITERATIONS("iterations"),
+    KEY_PAIR("keyPair"),
+    PRIVATE_KEY("privateKey"),
+    PUBLIC_KEY("publicKey");
 
     private final String fieldName;
 

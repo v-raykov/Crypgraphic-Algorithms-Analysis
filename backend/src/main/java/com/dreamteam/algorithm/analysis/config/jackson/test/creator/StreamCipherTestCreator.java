@@ -19,7 +19,7 @@ public class StreamCipherTestCreator implements TestCreator<StreamCipherEncrypti
 
     @Override
     public Test create(JsonNode node, StreamCipherEncryptionAlgorithm algorithm) {
-        var plaintext = node.get(FieldNames.PLAINTEXT.toString()).asText();
+        var plaintext = node.get(FieldNames.DATA.toString()).asText();
         node = getObjectNodeIfProvided(node, FieldNames.PARAMETERS.toString());
         return new EncryptionTest<>(algorithm, plaintext,
                 EncryptionParametersFactory.createStreamCipherEncryptionParameters(

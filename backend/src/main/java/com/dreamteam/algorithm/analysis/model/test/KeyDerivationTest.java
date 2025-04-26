@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class KeyDerivationTest<P extends KeyDerivationParameters> extends Test {
     private KeyDerivationAlgorithm<P> algorithm;
-    private String plaintext;
+    private String data;
     private P parameters;
 }

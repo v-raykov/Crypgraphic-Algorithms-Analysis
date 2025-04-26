@@ -19,7 +19,7 @@ public class CountBasedKeyDerivationTestCreator implements TestCreator<CountBase
 
     @Override
     public Test create(JsonNode node, CountBasedKeyDerivationAlgorithm algorithm) {
-        var plaintext = node.get(FieldNames.PLAINTEXT.toString()).asText();
+        var plaintext = node.get(FieldNames.DATA.toString()).asText();
         node = getObjectNodeIfProvided(node, FieldNames.PARAMETERS.toString());
         return new KeyDerivationTest<>(algorithm, plaintext,
                 KeyDerivationParametersFactory.createCountBasedKeyDerivationParameters(

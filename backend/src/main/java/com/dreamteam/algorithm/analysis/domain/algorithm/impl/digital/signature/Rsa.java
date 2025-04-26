@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature;
 
-import lombok.Data;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.parameter.DigitalSignatureKeyPair;
 import org.bouncycastle.crypto.AsymmetricBlockCipher;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -14,15 +14,10 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@Data
-public class RSA implements DigitalSignatureAlgorithm {
-
-    private final int keySize = 2048; // example fixed size if needed
-
+public class Rsa implements DigitalSignatureAlgorithm {
     @Override
     public byte[] sign(byte[] data, byte[] privateKey) throws CryptoException, IOException {
         RSAKeyParameters privKeyParams = (RSAKeyParameters) PrivateKeyFactory.createKey(privateKey);
-
         AsymmetricBlockCipher rsaEngine = new RSABlindedEngine();
         PSSSigner signer = new PSSSigner(rsaEngine, new SHA256Digest(), 32);
         signer.init(true, privKeyParams);
@@ -41,5 +36,8 @@ public class RSA implements DigitalSignatureAlgorithm {
         return signer.verifySignature(signature);
     }
 
-
+    @Override
+    public DigitalSignatureKeyPair generateKeyPair() {
+        return new DigitalSignatureKeyPair("RSA", 2048);
+    }
 }
