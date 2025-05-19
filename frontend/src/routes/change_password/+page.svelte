@@ -1,6 +1,7 @@
 <script>
     import { navigate } from 'svelte-routing';
-  
+    import { register } from '$lib/api.js'
+
     let currentPassword = '';
     let newPassword = '';
     let confirmPassword = '';
