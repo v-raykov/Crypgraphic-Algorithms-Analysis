@@ -1,203 +1,182 @@
-const BASE_URL = 'http://localhost:8080';
+import axios from 'axios';
 
-async function parseErrorResponse(res) {
-  const text = await res.text().catch(() => '');
-  console.error(`API error: ${res.status}`, text);
-  try {
-    const error = JSON.parse(text);
-    return error.message || 'Unknown error';
-  } catch {
-    return 'Unknown error';
-  }
-}
+const api = axios.create({ baseURL: 'http://localhost:8080' });
 
-export async function login(username, password) {
-  const res = await fetch(`${BASE_URL}/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Login failed');
-  }
-  return await res.json();
-}
+const getJwt = () => localStorage.getItem('jwt');
+const authHeaders = () => {
+	const token = getJwt();
+	return token ? { Authorization: `Bearer ${token}` } : {};
+};
 
-export async function register(username, email, password) {
-  const res = await fetch(`${BASE_URL}/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, email, password })
-    // no credentials needed here unless backend sets cookies on register
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Registration failed');
-  }
-  return await res.json();
-}
+const parseAxiosError = async (error) => {
+	if (error.response) {
+		const { data, statusText } = error.response;
+		return data?.message || statusText || 'Unknown error';
+	}
+	return error.request ? 'No response from server' : error.message;
+};
 
-export async function fetchAlgorithmTypes() {
-  const res = await fetch(`${BASE_URL}/algorithm`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch algorithm types');
-  }
-  return await res.json();
-}
+export const login = async (username, password) => {
+	try {
+		const res = await api.post('/login', { username, password });
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Login failed');
+	}
+};
 
-export async function fetchAlgorithmsByType(type) {
-  const kebabType = type.toLowerCase().replace(/\s+/g, '-');
-  const res = await fetch(`${BASE_URL}/algorithm/type/${kebabType}`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch algorithms for type: ' + type);
-  }
-  return await res.json();
-}
+export const register = async (username, email, password) => {
+	try {
+		const res = await api.post('/register', { username, email, password });
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Registration failed');
+	}
+};
 
-export async function fetchAlgorithmByName(name) {
-  const res = await fetch(`${BASE_URL}/algorithm/name/${encodeURIComponent(name)}`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch algorithm details for: ' + name);
-  }
-  return await res.json();
-}
+export const fetchAlgorithmTypes = async () => {
+	try {
+		const res = await api.get('/algorithm', { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error('Failed to fetch algorithm types');
+	}
+};
 
-export async function fetchTests() {
-  const res = await fetch(`${BASE_URL}/test`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch tests');
-  }
-  return await res.json();
-}
+export const fetchAlgorithmsByType = async (type) => {
+	try {
+		const kebabType = type.toLowerCase().replace(/\s+/g, '-');
+		const res = await api.get(`/algorithm/type/${kebabType}`, { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error(`Failed to fetch algorithms for type: ${type}`);
+	}
+};
 
-export async function fetchTestById(id) {
-  const res = await fetch(`${BASE_URL}/test/${id}`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch test with id: ' + id);
-  }
-  return await res.json();
-}
+export const fetchAlgorithmByName = async (name) => {
+	try {
+		const res = await api.get(`/algorithm/name/${encodeURIComponent(name)}`, {
+			headers: authHeaders()
+		});
+		return res.data;
+	} catch {
+		throw new Error(`Failed to fetch algorithm details for: ${name}`);
+	}
+};
 
-export async function postTest(algorithm, plaintext, parameters = {}) {
-  const res = await fetch(`${BASE_URL}/test`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ algorithm, plaintext, parameters })
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Failed to post test');
-  }
-  return await res.json();
-}
+export const fetchTests = async () => {
+	try {
+		const res = await api.get('/test', { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error('Failed to fetch tests');
+	}
+};
 
-export async function fetchUser() {
-  const res = await fetch(`${BASE_URL}/user`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch user info');
-  }
-  return await res.json();
-}
+export const fetchTestById = async (id) => {
+	try {
+		const res = await api.get(`/test/${id}`, { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error(`Failed to fetch test with id: ${id}`);
+	}
+};
 
-export async function changePassword(password, newPassword) {
-  const res = await fetch(`${BASE_URL}/user/change-password`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ password, newPassword })
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Failed to change password');
-  }
-  return await res.json();
-}
+export const postTest = async (algorithm, plaintext, parameters = {}) => {
+	try {
+		const res = await api.post(
+			'/test',
+			{ algorithm, plaintext, parameters },
+			{ headers: authHeaders() }
+		);
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Failed to post test');
+	}
+};
 
-export async function changeEmail(password, newEmail) {
-  const res = await fetch(`${BASE_URL}/user/change-email`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ password, newEmail })
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Failed to change email');
-  }
-  return await res.json();
-}
+export const fetchUser = async () => {
+	try {
+		const res = await api.get('/user', { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error('Failed to fetch user info');
+	}
+};
 
-export async function changeUsername(password, newUsername) {
-  const res = await fetch(`${BASE_URL}/user/change-username`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({ password, newUsername })
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Failed to change username');
-  }
-  return await res.json();
-}
+export const changePassword = async (password, newPassword) => {
+	try {
+		const res = await api.put(
+			'/user/change-password',
+			{ password, newPassword },
+			{ headers: authHeaders() }
+		);
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Failed to change password');
+	}
+};
 
-// Admin endpoints
-export async function fetchAdminDashboard() {
-  const res = await fetch(`${BASE_URL}/admin`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch admin dashboard');
-  }
-  return await res.json();
-}
+export const changeEmail = async (password, newEmail) => {
+	try {
+		const res = await api.put(
+			'/user/change-email',
+			{ password, newEmail },
+			{ headers: authHeaders() }
+		);
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Failed to change email');
+	}
+};
 
-export async function fetchAdminUsers() {
-  const res = await fetch(`${BASE_URL}/admin/users`, {
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch admin users');
-  }
-  return await res.json();
-}
+export const changeUsername = async (password, newUsername) => {
+	try {
+		const res = await api.put(
+			'/user/change-username',
+			{ password, newUsername },
+			{ headers: authHeaders() }
+		);
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Failed to change username');
+	}
+};
 
-export async function deleteUser(id) {
-  const res = await fetch(`${BASE_URL}/admin/users/${id}`, {
-    method: 'DELETE',
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Failed to delete user');
-  }
-  return await res.json();
-}
+export const fetchAdminDashboard = async () => {
+	try {
+		const res = await api.get('/admin', { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error('Failed to fetch admin dashboard');
+	}
+};
 
-export async function setUserAdminStatus(id, isAdmin) {
-  // Double-check your backend path here, adjust if needed
-  const res = await fetch(`${BASE_URL}/owner/users/${id}/adminStatus/${isAdmin}`, {
-    method: 'PUT',
-    credentials: 'include'
-  });
-  if (!res.ok) {
-    const message = await parseErrorResponse(res);
-    throw new Error(message || 'Failed to change admin status');
-  }
-  return await res.json();
-}
+export const fetchAdminUsers = async () => {
+	try {
+		const res = await api.get('/admin/users', { headers: authHeaders() });
+		return res.data;
+	} catch {
+		throw new Error('Failed to fetch admin users');
+	}
+};
+
+export const deleteUser = async (id) => {
+	try {
+		const res = await api.delete(`/admin/users/${id}`, { headers: authHeaders() });
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Failed to delete user');
+	}
+};
+
+export const setUserAdminStatus = async (id, isAdmin) => {
+	try {
+		const res = await api.put(`/owner/users/${id}/adminStatus/${isAdmin}`, null, {
+			headers: authHeaders()
+		});
+		return res.data;
+	} catch (err) {
+		throw new Error((await parseAxiosError(err)) || 'Failed to change admin status');
+	}
+};

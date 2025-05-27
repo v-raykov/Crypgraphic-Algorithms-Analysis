@@ -17,7 +17,7 @@
     try {
       const data = await login(username, password);
       if (data.token) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('jwt', data.token);
         await goto('/algorithms');  // redirect to home page or dashboard
       } else {
         errorMessage = data.message || 'Login failed';
