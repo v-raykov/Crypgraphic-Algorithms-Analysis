@@ -4,11 +4,12 @@ import com.dreamteam.algorithm.analysis.config.exception.FaultyAlgorithmExceptio
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.KeyDerivationAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.parameter.KeyDerivationParameters;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.DigitalSignatureAlgorithm;
-import com.dreamteam.algorithm.analysis.model.test.key.pair.AlgorithmKeyPair;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.parameter.EncryptionParameters;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.exchange.key.KeyExchangeAlgorithm;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.hash.HashAlgorithm;
 import com.dreamteam.algorithm.analysis.model.benchmark.PerformanceBenchmark;
+import com.dreamteam.algorithm.analysis.model.test.key.pair.AlgorithmKeyPair;
 
 import java.util.Arrays;
 
@@ -54,6 +55,12 @@ public class TestExecutionHelper {
 
     public static byte[] deriveSharedSecret(KeyExchangeAlgorithm algorithm, AlgorithmKeyPair algorithmKeyPair, PerformanceBenchmark benchmark) throws Exception {
         return PerformanceMonitor.measureExecution(() -> algorithm.deriveSharedSecret(algorithmKeyPair.getPublicKey(), algorithmKeyPair.getPrivateKey()),
+                benchmark::setCipherTime,
+                benchmark::setCipherMemory);
+    }
+
+    public static byte[] hashData(HashAlgorithm algorithm, byte[] data, PerformanceBenchmark benchmark) throws Exception {
+        return PerformanceMonitor.measureExecution(() -> algorithm.hash(data),
                 benchmark::setCipherTime,
                 benchmark::setCipherMemory);
     }

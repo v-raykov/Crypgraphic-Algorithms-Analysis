@@ -23,7 +23,7 @@ public enum AlgorithmType {
     DIGITAL_SIGNATURE("Digital Signature", "digital-signature"),
     BLOCK_CIPHER_ENCRYPTION("Block Cipher Encryption", "block-encryption"),
     STREAM_CIPHER_ENCRYPTION("Stream Cipher Encryption", "stream-encryption"),
-    HASHING("Hashing", "hashing"),
+    HASH("Hashing", "hashing"),
     HOMOMORPHIC_ENCRYPTION("Homomorphic Encryption", "homomorphic-encryption"),
     KEY_EXCHANGE("Key Exchange", "key-exchange"),
     ZERO_KNOWLEDGE_PROOF("Zero-Knowledge Proof", "zero-knowledge-proof");
@@ -52,7 +52,7 @@ public enum AlgorithmType {
             case DigitalSignatureAlgorithm ignored -> DIGITAL_SIGNATURE;
             case BlockCipherEncryptionAlgorithm ignored -> BLOCK_CIPHER_ENCRYPTION;
             case StreamCipherEncryptionAlgorithm ignored -> STREAM_CIPHER_ENCRYPTION;
-            case HashAlgorithm ignored -> HASHING;
+            case HashAlgorithm ignored -> HASH;
             case HomomorphicEncryptionAlgorithm ignored -> HOMOMORPHIC_ENCRYPTION;
             case KeyExchangeAlgorithm ignored -> KEY_EXCHANGE;
             case ZeroKnowledgeProofAlgorithm ignored -> ZERO_KNOWLEDGE_PROOF;

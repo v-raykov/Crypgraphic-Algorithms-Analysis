@@ -58,7 +58,6 @@ Used for **integrity verification** and **digital signatures**.
   - **SHA3-384** – `48 bytes`
   - **SHA3-512** – `64 bytes`
 - **BLAKE2** – `32 or 64 bytes`
-- **BLAKE3** – `32 bytes`
 - **RIPEMD-160** – `20 bytes`
 - **Whirlpool** – `64 bytes`
 - **Tiger** – `24 bytes`

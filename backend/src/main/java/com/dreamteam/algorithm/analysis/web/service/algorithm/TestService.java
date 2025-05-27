@@ -22,6 +22,7 @@ public class TestService {
             case KeyDerivationTest<?> t -> testService.testKeyDerivation(t);
             case DigitalSignatureTest t -> testService.testDigitalSignature(t);
             case KeyExchangeTest t -> testService.testKeyExchange(t);
+            case HashTest t -> testService.testHash(t);
             default -> throw new IllegalStateException("Unexpected value: " + test);
         };
         return modelMapper.map(resultStorage.addResult(result), TestResultDto.class);
