@@ -2,7 +2,7 @@ package com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature
 
 import com.dreamteam.algorithm.analysis.domain.algorithm.base.Algorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmType;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.parameter.DigitalSignatureKeyPair;
+import com.dreamteam.algorithm.analysis.model.test.key.pair.AlgorithmKeyPair;
 import org.bouncycastle.crypto.CryptoException;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ public interface DigitalSignatureAlgorithm extends Algorithm {
 
     boolean verify(byte[] data, byte[] signature, byte[] publicKey) throws IOException;
 
-    DigitalSignatureKeyPair generateKeyPair();
+    AlgorithmKeyPair generateKeyPair();
 
     @Override
     default AlgorithmType getType() {
@@ -22,6 +22,6 @@ public interface DigitalSignatureAlgorithm extends Algorithm {
 
     @Override
     default Field[] getFields() {
-        return new Field[0];
+        return AlgorithmKeyPair.class.getDeclaredFields();
     }
 }

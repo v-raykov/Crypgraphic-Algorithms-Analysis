@@ -4,10 +4,11 @@ import com.dreamteam.algorithm.analysis.config.exception.FaultyAlgorithmExceptio
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.KeyDerivationAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.parameter.KeyDerivationParameters;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.DigitalSignatureAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.parameter.DigitalSignatureKeyPair;
+import com.dreamteam.algorithm.analysis.model.test.key.pair.AlgorithmKeyPair;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.parameter.EncryptionParameters;
-import com.dreamteam.algorithm.analysis.model.test.benchmark.PerformanceBenchmark;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.exchange.key.KeyExchangeAlgorithm;
+import com.dreamteam.algorithm.analysis.model.benchmark.PerformanceBenchmark;
 
 import java.util.Arrays;
 
@@ -39,15 +40,21 @@ public class TestExecutionHelper {
         );
     }
 
-    public static byte[] signData(DigitalSignatureAlgorithm algorithm, byte[] bytes, DigitalSignatureKeyPair keyPair, PerformanceBenchmark benchmark) throws Exception {
-        return PerformanceMonitor.measureExecution(() -> algorithm.sign(bytes, keyPair.getPrivateKey()),
+    public static byte[] signData(DigitalSignatureAlgorithm algorithm, byte[] bytes, AlgorithmKeyPair algorithmKeyPair, PerformanceBenchmark benchmark) throws Exception {
+        return PerformanceMonitor.measureExecution(() -> algorithm.sign(bytes, algorithmKeyPair.getPrivateKey()),
                 benchmark::setCipherTime,
                 benchmark::setCipherMemory);
     }
 
-    public static void validateSignature(DigitalSignatureAlgorithm algorithm, byte[] bytes, byte[] signature, DigitalSignatureKeyPair keyPair, PerformanceBenchmark benchmark) throws Exception {
-        PerformanceMonitor.measureExecution(() -> algorithm.verify(bytes, signature, keyPair.getPublicKey()),
-                benchmark::setDecipherTime,
-                benchmark::setDecipherMemory);
+    public static void validateSignature(DigitalSignatureAlgorithm algorithm, byte[] bytes, byte[] signature, AlgorithmKeyPair algorithmKeyPair, PerformanceBenchmark benchmark) throws Exception {
+        PerformanceMonitor.measureExecution(() -> algorithm.verify(bytes, signature, algorithmKeyPair.getPublicKey()),
+                benchmark::setCipherTime,
+                benchmark::setCipherMemory);
+    }
+
+    public static byte[] deriveSharedSecret(KeyExchangeAlgorithm algorithm, AlgorithmKeyPair algorithmKeyPair, PerformanceBenchmark benchmark) throws Exception {
+        return PerformanceMonitor.measureExecution(() -> algorithm.deriveSharedSecret(algorithmKeyPair.getPublicKey(), algorithmKeyPair.getPrivateKey()),
+                benchmark::setCipherTime,
+                benchmark::setCipherMemory);
     }
 }

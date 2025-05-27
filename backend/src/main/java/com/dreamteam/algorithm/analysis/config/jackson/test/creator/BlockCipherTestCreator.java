@@ -19,7 +19,7 @@ public class BlockCipherTestCreator implements TestCreator<BlockCipherEncryption
 
     @Override
     public Test create(JsonNode node, BlockCipherEncryptionAlgorithm algorithm) {
-        var plaintext = node.get(FieldNames.DATA.toString()).asText();
+        String plaintext = node.get(FieldNames.DATA.toString()).asText();
         node = getObjectNodeIfProvided(node, FieldNames.PARAMETERS.toString());
         return new EncryptionTest<>(algorithm, plaintext,
                 EncryptionParametersFactory.createBlockCipherEncryptionParameters(

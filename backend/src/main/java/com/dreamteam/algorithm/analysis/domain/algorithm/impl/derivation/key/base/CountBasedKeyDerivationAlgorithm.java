@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.AlgorithmUtilities.secureRandom;
+import static com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmUtilities.secureRandom;
 
 public abstract class CountBasedKeyDerivationAlgorithm implements KeyDerivationAlgorithm<CountBasedKeyDerivationParameters> {
     @Override

@@ -1,17 +1,19 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm;
 
 import com.dreamteam.algorithm.analysis.config.exception.InvalidParameterException;
+import com.dreamteam.algorithm.analysis.model.test.key.pair.AlgorithmKeyPair;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.KeyDerivationAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.parameter.KeyDerivationParameters;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.DigitalSignatureAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.parameter.DigitalSignatureKeyPair;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.parameter.EncryptionParameters;
+import com.dreamteam.algorithm.analysis.domain.algorithm.impl.exchange.key.KeyExchangeAlgorithm;
 import com.dreamteam.algorithm.analysis.model.test.DigitalSignatureTest;
 import com.dreamteam.algorithm.analysis.model.test.EncryptionTest;
 import com.dreamteam.algorithm.analysis.model.test.KeyDerivationTest;
-import com.dreamteam.algorithm.analysis.model.test.TestResult;
-import com.dreamteam.algorithm.analysis.model.test.benchmark.SecurityBenchmark;
+import com.dreamteam.algorithm.analysis.model.test.KeyExchangeTest;
+import com.dreamteam.algorithm.analysis.model.TestResult;
+import com.dreamteam.algorithm.analysis.model.benchmark.SecurityBenchmark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,15 +46,33 @@ public class ExecutionService {
     public TestResult testDigitalSignature(DigitalSignatureTest test) {
         var result = new TestResult(test);
         var algorithm = test.getAlgorithm();
-        executeDigitalSignatureTest(algorithm, test.getData().getBytes(), test.getKeyPair(), result);
+        executeDigitalSignatureTest(algorithm, test.getData().getBytes(), test.getAlgorithmKeyPair(), result);
         executeSecurityBenchmarks(result);
         return result;
     }
 
-    private void executeDigitalSignatureTest(DigitalSignatureAlgorithm algorithm, byte[] bytes, DigitalSignatureKeyPair keyPair, TestResult result) {
+    public TestResult testKeyExchange(KeyExchangeTest test) {
+        var result = new TestResult(test);
+        var algorithm = test.getAlgorithm();
+        executeKeyExchangeTest(algorithm, test.getKeyPair(), result);
+        executeSecurityBenchmarks(result);
+        return result;
+    }
+
+    private void executeKeyExchangeTest(KeyExchangeAlgorithm algorithm, AlgorithmKeyPair algorithmKeyPair, TestResult result) {
         try {
-            byte[] signature = signData(algorithm, bytes, keyPair, result.getPerformance());
-            validateSignature(algorithm, bytes, signature, keyPair, result.getPerformance());
+            byte[] shared = deriveSharedSecret(algorithm, algorithmKeyPair, result.getPerformance());
+            result.setCipherText(encodeBase64(shared));
+            result.setTimestamp(LocalDateTime.now());
+        } catch (Exception e) {
+            throw new InvalidParameterException(algorithm.getName(), e);
+        }
+    }
+
+    private void executeDigitalSignatureTest(DigitalSignatureAlgorithm algorithm, byte[] bytes, AlgorithmKeyPair algorithmKeyPair, TestResult result) {
+        try {
+            byte[] signature = signData(algorithm, bytes, algorithmKeyPair, result.getPerformance());
+            validateSignature(algorithm, bytes, signature, algorithmKeyPair, result.getPerformance());
             result.setCipherText(encodeBase64(signature));
             result.setTimestamp(LocalDateTime.now());
         } catch (Exception e) {

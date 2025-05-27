@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidParameterException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidKeySizeException(InvalidParameterException ex) {
+    public ResponseEntity<ErrorResponse> handleInvalidParameterException(InvalidParameterException ex) {
         var status = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(new ErrorResponse(status, ex.getMessage()));
     }

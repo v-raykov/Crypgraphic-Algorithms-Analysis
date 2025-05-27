@@ -1,7 +1,8 @@
-package com.dreamteam.algorithm.analysis.model.test;
+package com.dreamteam.algorithm.analysis.model;
 
-import com.dreamteam.algorithm.analysis.model.test.benchmark.PerformanceBenchmark;
-import com.dreamteam.algorithm.analysis.model.test.benchmark.SecurityBenchmark;
+import com.dreamteam.algorithm.analysis.model.test.Test;
+import com.dreamteam.algorithm.analysis.model.benchmark.PerformanceBenchmark;
+import com.dreamteam.algorithm.analysis.model.benchmark.SecurityBenchmark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -5,7 +5,7 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.bas
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.KeyDerivationAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.ResourceBasedKeyDerivationAlgorithm;
 
-import static com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.AlgorithmUtilities.*;
+import static com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmUtilities.*;
 
 public class KeyDerivationParametersFactory {
     public static ResourceBasedKeyDerivationParameters createResourceBasedKeyDerivationParameters(ResourceBasedKeyDerivationAlgorithm algorithm, byte[] salt, int keySize, int costFactor, int blockSize, int parallelization) {

@@ -24,8 +24,8 @@ public class TestDeserializer extends JsonDeserializer<Test> {
     @Override
     public Test deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        if (!node.has(FieldNames.ALGORITHM.toString()) || !node.has(FieldNames.DATA.toString())) {
-            throw new BadRequestException();
+        if (!node.has(FieldNames.ALGORITHM.toString())) {
+            throw new BadRequestException("Please specify algorithm to test!");
         }
         return createTestFromJson(node);
     }

@@ -5,7 +5,7 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.Bl
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.EncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.StreamCipherEncryptionAlgorithm;
 
-import static com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.AlgorithmUtilities.*;
+import static com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmUtilities.*;
 
 public class EncryptionParametersFactory {
     public static BlockCipherEncryptionParameters createBlockCipherEncryptionParameters(BlockCipherEncryptionAlgorithm algorithm, byte[] key, int keySize, byte[] iv) {

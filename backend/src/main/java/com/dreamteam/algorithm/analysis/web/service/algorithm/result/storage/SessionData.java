@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage;
 
-import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.TestResult;
 import lombok.Getter;
 import lombok.Setter;
 

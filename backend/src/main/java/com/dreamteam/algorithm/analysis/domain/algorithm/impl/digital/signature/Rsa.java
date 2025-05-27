@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature;
 
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.digital.signature.parameter.DigitalSignatureKeyPair;
+import com.dreamteam.algorithm.analysis.model.test.key.pair.AlgorithmKeyPair;
 import org.bouncycastle.crypto.AsymmetricBlockCipher;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.digests.SHA256Digest;
@@ -37,7 +37,7 @@ public class Rsa implements DigitalSignatureAlgorithm {
     }
 
     @Override
-    public DigitalSignatureKeyPair generateKeyPair() {
-        return new DigitalSignatureKeyPair("RSA", 2048);
+    public AlgorithmKeyPair generateKeyPair() {
+        return new AlgorithmKeyPair("RSA", 2048);
     }
 }

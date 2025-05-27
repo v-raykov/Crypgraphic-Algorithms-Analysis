@@ -3,7 +3,9 @@ package com.dreamteam.algorithm.analysis.config.security;
 import com.dreamteam.algorithm.analysis.config.security.jwt.JwtAuthFilter;
 import com.dreamteam.algorithm.analysis.config.security.rate.limit.RateLimitFilter;
 import com.dreamteam.algorithm.analysis.config.security.role.Role;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
+
+import java.security.Security;
 
 @Configuration
 @EnableWebSecurity
@@ -44,5 +48,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @PostConstruct
+    public void init() {
+        Security.addProvider(new BouncyCastleProvider());
     }
 }

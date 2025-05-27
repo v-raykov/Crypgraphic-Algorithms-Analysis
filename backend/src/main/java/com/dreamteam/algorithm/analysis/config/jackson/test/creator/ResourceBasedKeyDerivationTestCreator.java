@@ -19,7 +19,7 @@ public class ResourceBasedKeyDerivationTestCreator implements TestCreator<Resour
 
     @Override
     public Test create(JsonNode node, ResourceBasedKeyDerivationAlgorithm algorithm) {
-        var plaintext = node.get(FieldNames.DATA.toString()).asText();
+        String plaintext = node.get(FieldNames.DATA.toString()).asText();
         node = getObjectNodeIfProvided(node, FieldNames.PARAMETERS.toString());
         return new KeyDerivationTest<>(algorithm, plaintext,
                 KeyDerivationParametersFactory.createResourceBasedKeyDerivationParameters(

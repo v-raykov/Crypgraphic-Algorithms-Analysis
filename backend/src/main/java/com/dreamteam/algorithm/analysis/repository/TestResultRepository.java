@@ -1,6 +1,6 @@
 package com.dreamteam.algorithm.analysis.repository;
 
-import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.TestResult;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

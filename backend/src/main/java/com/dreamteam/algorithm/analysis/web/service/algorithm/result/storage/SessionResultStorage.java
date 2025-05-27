@@ -1,7 +1,7 @@
 package com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage;
 
 import com.dreamteam.algorithm.analysis.config.exception.not.found.TestResultNotFoundException;
-import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.TestResult;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;

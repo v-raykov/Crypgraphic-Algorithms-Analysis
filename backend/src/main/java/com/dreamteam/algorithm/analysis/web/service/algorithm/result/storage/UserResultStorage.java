@@ -2,7 +2,7 @@ package com.dreamteam.algorithm.analysis.web.service.algorithm.result.storage;
 
 import com.dreamteam.algorithm.analysis.config.exception.not.found.TestResultNotFoundException;
 import com.dreamteam.algorithm.analysis.model.User;
-import com.dreamteam.algorithm.analysis.model.test.TestResult;
+import com.dreamteam.algorithm.analysis.model.TestResult;
 import com.dreamteam.algorithm.analysis.repository.TestResultRepository;
 import com.dreamteam.algorithm.analysis.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.bouncycastle.crypto.generators.BCrypt;
 import org.springframework.stereotype.Component;
 
-import static com.dreamteam.algorithm.analysis.domain.algorithm.impl.derivation.key.base.AlgorithmUtilities.secureRandom;
+import static com.dreamteam.algorithm.analysis.domain.algorithm.base.AlgorithmUtilities.secureRandom;
 
 @Component
 @RequiredArgsConstructor
