@@ -15,11 +15,9 @@
 - /test/{id} (GET)
 - /test (POST)
   - has two required fields.
-  - required fields: `{algorithm, plaintext}`
+  - required fields: `{algorithm, data}`
   - optional field `parameters`. The user can influence the parameters of the algorithm. If not provided, default values are set.
-  - `parameters` is an object and the fields inside it depend on the type of algorithm being tested.
-      - for block cipher encryption: `encryptionKey, keySize, iv`
-      - for stream cipher encryption: `encryptionKey, keySize`
+  - `parameters` is an object and the fields inside it depend on the type of algorithm being tested. The available parameters for each algorithm are provided by the (GET) /algorithm endpoint
 
 ## User
 - /user (GET)
