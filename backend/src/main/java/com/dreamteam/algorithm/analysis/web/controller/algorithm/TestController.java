@@ -18,7 +18,7 @@ public class TestController {
 
     @PostMapping
     public ResponseEntity<TestResultDto> testAlgorithm(@RequestBody Test test) {
-        var result = testService.testAlgorithm(test);
+        var result = testService.performTest(test);
         return ResponseEntity.created(URI.create("/test/" + result.getId()))
                 .body(result);
     }
