@@ -1,199 +1,241 @@
 <script>
   import { onMount } from 'svelte';
   import {
-    login,
-    register,
-    fetchAlgorithmTypes,
-    fetchAlgorithmsByType,
-    fetchAlgorithmByName,
-    fetchTests,
-    fetchTestById,
-    postTest,
-    fetchUser,
-    changePassword,
-    changeEmail,
-    changeUsername,
-    fetchAdminDashboard,
-    fetchAdminUsers,
-    deleteUser,
-    setUserAdminStatus
+    fetchAlgorithmTypes,  // actually fetches all algorithms
+    postTest
   } from '$lib/api.js';
- let algorithmTypes = [];
-  let selectedType = '';
+
+  let algorithmTypes = [];
+  let allAlgorithms = [];
   let algorithms = [];
+  let selectedType = '';
   let selectedAlgorithm = '';
-  let errorMessage = '';
+  let inputData = '';
+  let testResult = null;
 
   onMount(async () => {
-    errorMessage = '';
     try {
-      algorithmTypes = await fetchAlgorithmTypes();
-    } catch (err) {
-      errorMessage = err.message || 'Failed to load algorithm types';
+      allAlgorithms = await fetchAlgorithmTypes(); // returns all algorithms
+      algorithmTypes = [...new Set(allAlgorithms.map(a => a.type))];
+      selectedType = algorithmTypes[0];
+      algorithms = allAlgorithms.filter(a => a.type === selectedType);
+      selectedAlgorithm = algorithms[0]?.name || '';
+    } catch (e) {
+      alert('Failed to load algorithms');
     }
   });
 
-  async function onSelectType() {
-    selectedAlgorithm = '';
-    algorithms = [];
-    errorMessage = '';
-    if (!selectedType) return;
+  const onTypeChange = () => {
+    algorithms = allAlgorithms.filter(a => a.type === selectedType);
+    selectedAlgorithm = algorithms[0]?.name || '';
+  };
 
+  const runTest = async () => {
     try {
-      algorithms = await fetchAlgorithmsByType(selectedType);
-    } catch (err) {
-      errorMessage = err.message || 'Failed to load algorithms';
+      testResult = await postTest(selectedAlgorithm, inputData || 'sample data');
+    } catch (e) {
+      testResult = { error: e.message };
     }
-  }
+  };
+
+  const clearForm = () => {
+    inputData = '';
+    testResult = null;
+  };
+
+  const benchmark = () => {
+    alert('Benchmark feature not implemented yet.');
+  };
 </script>
 
-<main>
-  <div class="card">
-    <h1>Select & Analyze Algorithm</h1>
-
-    <div class="form-group">
-      <label for="type">Algorithm Type</label>
-      <select id="type" on:change={onSelectType} bind:value={selectedType}>
-        <option value="" disabled selected>Select Algorithm Type</option>
-        {#each algorithmTypes as type}
-          <option value={type.id}>{type.name}</option>
-        {/each}
-      </select>
-    </div>
-
-    {#if algorithms.length > 0}
-      <div class="form-group">
-        <label for="algorithm">Algorithm</label>
-        <select id="algorithm" bind:value={selectedAlgorithm}>
-          <option value="" disabled selected>Select Algorithm</option>
-          {#each algorithms as algo}
-            <option value={algo.id || algo}>{algo.name || algo}</option>
-          {/each}
-        </select>
-      </div>
-    {/if}
-
-    <button disabled={!selectedAlgorithm} on:click={() => alert(`Selected Algorithm: ${selectedAlgorithm}`)}>
-      🔍 Analyze
-    </button>
-
-    {#if errorMessage}
-      <div class="error" aria-live="assertive">{errorMessage}</div>
-    {/if}
-  </div>
-</main>
-
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-  main {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(145deg, #f0f4f8, #e2e8f0);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
+  :global(body) {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
   }
 
-  .card {
-    background: white;
+  main {
+    max-width: 1200px;
+    margin: auto;
     padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    animation: fadeIn 0.6s ease-out;
   }
 
   h1 {
-    font-size: 1.75rem;
-    color: #1c9dea;
-    text-align: center;
-    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #00ffff;
+    margin-bottom: 0.3rem;
   }
 
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  p {
+    opacity: 0.8;
+    margin-bottom: 2rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .panel:hover {
+    transform: scale(1.01);
   }
 
   label {
     font-weight: 600;
-    color: #333;
+    margin-top: 1rem;
+    display: block;
   }
 
-  select {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 1rem;
-    background-color: #f9fafb;
-    transition: border-color 0.3s;
+  select, textarea {
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  /* Make dropdown options readable */
+  select option {
+    background: #203a43;
+    color: white;
   }
 
   select:focus {
-    border-color: #1c9dea;
-    outline: none;
-  }
-
-  button {
-    background-color: #1c9dea;
+    background: rgba(255, 255, 255, 0.15);
     color: white;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+
+  .buttons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .buttons button {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
     border: none;
-    border-radius: 10px;
-    padding: 0.85rem;
-    font-weight: 600;
-    font-size: 1rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
+    transition: 0.2s;
   }
 
-  button:hover {
-    background-color: #1590e2;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 5px 15px rgba(28, 157, 234, 0.3);
+  .run {
+    background: #00bcd4;
   }
 
-  button:disabled {
-    background-color: #c4cbd4;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+  .bench {
+    background: #4caf50;
   }
 
-  .error {
-    color: #e63946;
-    font-weight: 600;
-    background-color: #ffe5e5;
-    padding: 0.75rem;
-    border-radius: 8px;
-    margin-top: 0.5rem;
-    text-align: center;
-    animation: fadeIn 0.4s ease;
+  .clear {
+    background: #e74c3c;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  .buttons button:hover {
+    filter: brightness(1.1);
   }
 
-  @media (max-width: 480px) {
-    .card {
-      padding: 1.5rem;
-    }
+  pre {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    color: #a0ffaf;
+    white-space: pre-wrap;
+  }
 
-    h1 {
-      font-size: 1.5rem;
-    }
+  .placeholder {
+    color: #ccc;
+    opacity: 0.7;
+  }
 
-    select, button {
-      font-size: 0.95rem;
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
+
+<main>
+  <h1>Cryptographic Algorithm Tester Tool</h1>
+  <p>Test and benchmark various cryptographic algorithms with different parameters</p>
+
+  <div class="grid">
+    <!-- Algorithm Configuration -->
+    <div class="panel">
+      <h3>🔐 Algorithm Configuration</h3>
+
+      <label>Algorithm Type:</label>
+      <select bind:value={selectedType} on:change={onTypeChange}>
+        {#each algorithmTypes as type}
+          <option value={type}>{type}</option>
+        {/each}
+      </select>
+
+      <label>Select Algorithm:</label>
+      <select bind:value={selectedAlgorithm}>
+        {#each algorithms as alg}
+          <option value={alg.name}>{alg.name}</option>
+        {/each}
+      </select>
+
+      <div class="note">
+        Hash functions produce fixed-size output regardless of input size.
+      </div>
+
+      <label>Input Data:</label>
+      <textarea bind:value={inputData} placeholder="Enter data or leave blank for sample data" />
+
+      <div class="buttons">
+        <button class="run" on:click={runTest}>RUN TEST</button>
+        <button class="bench" on:click={benchmark}>BENCHMARK</button>
+        <button class="clear" on:click={clearForm}>CLEAR</button>
+      </div>
+    </div>
+
+    <!-- Test Results -->
+    <div class="panel">
+      <h3>📊 Test Results</h3>
+      {#if testResult}
+        <pre>{JSON.stringify(testResult, null, 2)}</pre>
+      {:else}
+        <div class="placeholder">
+          Results will appear here after running a test.
+          <br />
+          Select an algorithm and click "Run Test" to begin.
+        </div>
+      {/if}
+    </div>
+  </div>
+</main>
