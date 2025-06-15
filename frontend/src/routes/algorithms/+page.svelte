@@ -11,8 +11,8 @@
   let selectedType = '';
   let selectedAlgorithm = '';
   let inputData = '';
-  let parameterValues = {};
   let testResult = null;
+  let parameterValues = {};
 
   onMount(async () => {
     try {
@@ -33,15 +33,63 @@
     updateParameters();
   };
 
+  const onAlgorithmChange = () => {
+    updateParameters();
+  };
+
   const updateParameters = () => {
     const algorithmObj = allAlgorithms.find(a => a.name === selectedAlgorithm);
     parameterValues = {};
-    algorithmObj?.parameters?.forEach(param => {
-      parameterValues[param] = '';
+
+    if (!algorithmObj?.parameters) return;
+
+    algorithmObj.parameters.forEach(param => {
+      switch (param) {
+        case 'keySize':
+          parameterValues[param] = '128';
+          break;
+        case 'salt':
+          parameterValues[param] = crypto.getRandomValues(new Uint8Array(8)).join('');
+          break;
+        case 'iv':
+          parameterValues[param] = crypto.getRandomValues(new Uint8Array(16)).join('');
+          break;
+        case 'ivSize':
+          parameterValues[param] = '16';
+          break;
+        case 'iterations':
+          parameterValues[param] = '1000';
+          break;
+        case 'costFactor':
+          parameterValues[param] = '16384';
+          break;
+        case 'blockSize':
+          parameterValues[param] = '8';
+          break;
+        case 'parallelization':
+          parameterValues[param] = '1';
+          break;
+        case 'encryptionKey':
+          parameterValues[param] = 'mySecretKey';
+          break;
+        case 'publicKey':
+        case 'privateKey':
+          parameterValues[param] = '';
+          break;
+        default:
+          parameterValues[param] = '';
+      }
     });
   };
 
   const runTest = async () => {
+    for (const [key, value] of Object.entries(parameterValues)) {
+      if (value.trim() === '') {
+        alert(`Please provide a value for parameter: ${key}`);
+        return;
+      }
+    }
+
     try {
       testResult = await postTest(selectedAlgorithm, inputData || 'sample data', parameterValues);
     } catch (e) {
@@ -52,13 +100,72 @@
   const clearForm = () => {
     inputData = '';
     testResult = null;
-    Object.keys(parameterValues).forEach(p => parameterValues[p] = '');
+    updateParameters();
   };
 
   const benchmark = () => {
     alert('Benchmark feature not implemented yet.');
   };
 </script>
+
+<main>
+  <h1>Cryptographic Algorithm Tester Tool</h1>
+  <p>Test and benchmark various cryptographic algorithms with different parameters</p>
+
+  <div class="grid">
+    <!-- Configuration Panel -->
+    <div class="panel">
+      <h3>🔐 Algorithm Configuration</h3>
+
+      <label>Algorithm Type:</label>
+      <select bind:value={selectedType} on:change={onTypeChange}>
+        {#each algorithmTypes as type}
+          <option value={type}>{type}</option>
+        {/each}
+      </select>
+
+      <label>Select Algorithm:</label>
+      <select bind:value={selectedAlgorithm} on:change={onAlgorithmChange}>
+        {#each algorithms as alg}
+          <option value={alg.name}>{alg.name}</option>
+        {/each}
+      </select>
+
+      {#if Object.keys(parameterValues).length > 0}
+        <label>Algorithm Parameters:</label>
+        {#each Object.keys(parameterValues) as param}
+          <div>
+            <label>{param}:</label>
+            <input type="text" bind:value={parameterValues[param]} />
+          </div>
+        {/each}
+      {/if}
+
+      <label>Input Data:</label>
+      <textarea bind:value={inputData} placeholder="Enter data or leave blank for sample data" />
+
+      <div class="buttons">
+        <button class="run" on:click={runTest}>RUN TEST</button>
+        <button class="bench" on:click={benchmark}>BENCHMARK</button>
+        <button class="clear" on:click={clearForm}>CLEAR</button>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="panel">
+      <h3>📊 Test Results</h3>
+      {#if testResult}
+        <pre>{JSON.stringify(testResult, null, 2)}</pre>
+      {:else}
+        <div class="placeholder">
+          Results will appear here after running a test.
+          <br />
+          Select an algorithm and click "Run Test" to begin.
+        </div>
+      {/if}
+    </div>
+  </div>
+</main>
 
 <style>
   :global(body) {
@@ -197,66 +304,3 @@
     }
   }
 </style>
-
-<main>
-  <h1>Cryptographic Algorithm Tester Tool</h1>
-  <p>Test and benchmark various cryptographic algorithms with different parameters</p>
-
-  <div class="grid">
-    <div class="panel">
-      <h3>🔐 Algorithm Configuration</h3>
-
-      <label>Algorithm Type:</label>
-      <select bind:value={selectedType} on:change={onTypeChange}>
-        {#each algorithmTypes as type}
-          <option value={type}>{type}</option>
-        {/each}
-      </select>
-
-      <label>Select Algorithm:</label>
-      <select bind:value={selectedAlgorithm} on:change={updateParameters}>
-        {#each algorithms as alg}
-          <option value={alg.name}>{alg.name}</option>
-        {/each}
-      </select>
-
-      <div class="note">
-        Hash functions produce fixed-size output regardless of input size.
-      </div>
-
-      <label>Input Data:</label>
-      <textarea bind:value={inputData} placeholder="Enter data or leave blank for sample data" />
-
-      {#if Object.keys(parameterValues).length}
-        <h4 style="margin-top: 1rem;">Parameters:</h4>
-        {#each Object.keys(parameterValues) as param}
-          <label>{param}:</label>
-          <input
-            type="text"
-            bind:value={parameterValues[param]}
-            placeholder={`Enter ${param}`}
-          />
-        {/each}
-      {/if}
-
-      <div class="buttons">
-        <button class="run" on:click={runTest}>RUN TEST</button>
-        <button class="bench" on:click={benchmark}>BENCHMARK</button>
-        <button class="clear" on:click={clearForm}>CLEAR</button>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h3>📊 Test Results</h3>
-      {#if testResult}
-        <pre>{JSON.stringify(testResult, null, 2)}</pre>
-      {:else}
-        <div class="placeholder">
-          Results will appear here after running a test.
-          <br />
-          Select an algorithm and click "Run Test" to begin.
-        </div>
-      {/if}
-    </div>
-  </div>
-</main>
