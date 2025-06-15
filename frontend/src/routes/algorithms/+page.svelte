@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import {
-    fetchAlgorithmTypes,  // actually fetches all algorithms
+    fetchAlgorithmTypes,
     postTest
   } from '$lib/api.js';
 
@@ -11,15 +11,17 @@
   let selectedType = '';
   let selectedAlgorithm = '';
   let inputData = '';
+  let parameterValues = {};
   let testResult = null;
 
   onMount(async () => {
     try {
-      allAlgorithms = await fetchAlgorithmTypes(); // returns all algorithms
+      allAlgorithms = await fetchAlgorithmTypes();
       algorithmTypes = [...new Set(allAlgorithms.map(a => a.type))];
       selectedType = algorithmTypes[0];
       algorithms = allAlgorithms.filter(a => a.type === selectedType);
       selectedAlgorithm = algorithms[0]?.name || '';
+      updateParameters();
     } catch (e) {
       alert('Failed to load algorithms');
     }
@@ -28,11 +30,20 @@
   const onTypeChange = () => {
     algorithms = allAlgorithms.filter(a => a.type === selectedType);
     selectedAlgorithm = algorithms[0]?.name || '';
+    updateParameters();
+  };
+
+  const updateParameters = () => {
+    const algorithmObj = allAlgorithms.find(a => a.name === selectedAlgorithm);
+    parameterValues = {};
+    algorithmObj?.parameters?.forEach(param => {
+      parameterValues[param] = '';
+    });
   };
 
   const runTest = async () => {
     try {
-      testResult = await postTest(selectedAlgorithm, inputData || 'sample data');
+      testResult = await postTest(selectedAlgorithm, inputData || 'sample data', parameterValues);
     } catch (e) {
       testResult = { error: e.message };
     }
@@ -41,6 +52,7 @@
   const clearForm = () => {
     inputData = '';
     testResult = null;
+    Object.keys(parameterValues).forEach(p => parameterValues[p] = '');
   };
 
   const benchmark = () => {
@@ -99,7 +111,7 @@
     display: block;
   }
 
-  select, textarea {
+  select, textarea, input {
     width: 100%;
     margin-top: 0.3rem;
     padding: 0.6rem;
@@ -110,7 +122,6 @@
     color: white;
   }
 
-  /* Make dropdown options readable */
   select option {
     background: #203a43;
     color: white;
@@ -192,7 +203,6 @@
   <p>Test and benchmark various cryptographic algorithms with different parameters</p>
 
   <div class="grid">
-    <!-- Algorithm Configuration -->
     <div class="panel">
       <h3>🔐 Algorithm Configuration</h3>
 
@@ -204,7 +214,7 @@
       </select>
 
       <label>Select Algorithm:</label>
-      <select bind:value={selectedAlgorithm}>
+      <select bind:value={selectedAlgorithm} on:change={updateParameters}>
         {#each algorithms as alg}
           <option value={alg.name}>{alg.name}</option>
         {/each}
@@ -217,6 +227,18 @@
       <label>Input Data:</label>
       <textarea bind:value={inputData} placeholder="Enter data or leave blank for sample data" />
 
+      {#if Object.keys(parameterValues).length}
+        <h4 style="margin-top: 1rem;">Parameters:</h4>
+        {#each Object.keys(parameterValues) as param}
+          <label>{param}:</label>
+          <input
+            type="text"
+            bind:value={parameterValues[param]}
+            placeholder={`Enter ${param}`}
+          />
+        {/each}
+      {/if}
+
       <div class="buttons">
         <button class="run" on:click={runTest}>RUN TEST</button>
         <button class="bench" on:click={benchmark}>BENCHMARK</button>
@@ -224,7 +246,6 @@
       </div>
     </div>
 
-    <!-- Test Results -->
     <div class="panel">
       <h3>📊 Test Results</h3>
       {#if testResult}
