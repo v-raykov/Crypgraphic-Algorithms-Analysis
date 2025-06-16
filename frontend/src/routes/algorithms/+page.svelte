@@ -1,9 +1,7 @@
 <script>
   import { onMount } from 'svelte';
-  import {
-    fetchAlgorithmTypes,
-    postTest
-  } from '$lib/api.js';
+  import { fetchAlgorithmTypes, postTest } from '$lib/api.js';
+  import { testHistory } from '$lib/stores.js';
 
   let algorithmTypes = [];
   let allAlgorithms = [];
@@ -40,7 +38,6 @@
   const updateParameters = () => {
     const algorithmObj = allAlgorithms.find(a => a.name === selectedAlgorithm);
     parameterValues = {};
-
     if (!algorithmObj?.parameters) return;
     algorithmObj.parameters.forEach(param => {
       parameterValues[param] = '';
@@ -56,7 +53,9 @@
     }
 
     try {
-      testResult = await postTest(selectedAlgorithm, data || 'sample data', filteredParams);
+      const result = await postTest(selectedAlgorithm, data || 'sample data', filteredParams);
+      testResult = result;
+      testHistory.update(history => [result, ...history]); // update shared store
     } catch (e) {
       testResult = { error: e.message };
     }
@@ -66,10 +65,6 @@
     data = '';
     testResult = null;
     updateParameters();
-  };
-
-  const benchmark = () => {
-    alert('Benchmark feature not implemented yet.');
   };
 </script>
 
@@ -111,20 +106,60 @@
 
       <div class="buttons">
         <button class="run" on:click={runTest}>RUN TEST</button>
-        <button class="bench" on:click={benchmark}>BENCHMARK</button>
         <button class="clear" on:click={clearForm}>CLEAR</button>
+        <a href="/test-history" class="history">TEST HISTORY</a>
       </div>
     </div>
 
     <!-- Results Panel -->
     <div class="panel">
-      <h3>📊 Test Results</h3>
+      <h3>📊 Test Result</h3>
+
       {#if testResult}
-        <pre>{JSON.stringify(testResult, null, 2)}</pre>
+        {#if testResult.error}
+          <p class="text-red-400 font-semibold">{testResult.error}</p>
+        {:else}
+          <div class="result-box">
+            <h4>Test ID</h4>
+            <p>{testResult.id}</p>
+
+            <h4>Timestamp</h4>
+            <p>{testResult.timestamp}</p>
+
+            <h4>Test Details</h4>
+            <ul>
+              <li><strong>Algorithm:</strong> {testResult.test?.algorithm}</li>
+              {#each Object.entries(testResult.test?.parameters || {}) as [key, value]}
+                <li><strong>{key}:</strong> {value}</li>
+              {/each}
+            </ul>
+
+            {#if testResult.cipherText}
+              <h4>Cipher Text</h4>
+              <p class="mono">{testResult.cipherText}</p>
+            {/if}
+
+            {#if testResult.decipherText}
+              <h4>Decryption Result</h4>
+              <p class="mono">{testResult.decipherText}</p>
+            {/if}
+
+            <h4>Performance</h4>
+            <ul>
+              <li><strong>Time:</strong> {testResult.performance?.cipherTime}</li>
+              <li><strong>Memory:</strong> {testResult.performance?.cipherMemory}</li>
+            </ul>
+
+            <h4>Security</h4>
+            <ul>
+              <li><strong>Entropy:</strong> {testResult.security?.entropy.toFixed(4)}</li>
+              <li><strong>Frequency Score:</strong> {testResult.security?.frequencyScore.toFixed(4)}</li>
+            </ul>
+          </div>
+        {/if}
       {:else}
         <div class="placeholder">
-          Results will appear here after running a test.
-          <br />
+          Results will appear here after running a test.<br />
           Select an algorithm and click "Run Test" to begin.
         </div>
       {/if}
@@ -201,19 +236,11 @@
 
   select:focus {
     background: rgba(255, 255, 255, 0.15);
-    color: white;
   }
 
   textarea {
     resize: vertical;
     min-height: 100px;
-  }
-
-  .note {
-    font-size: 0.85rem;
-    color: #ccc;
-    margin-top: 0.4rem;
-    font-style: italic;
   }
 
   .buttons {
@@ -223,7 +250,7 @@
     flex-wrap: wrap;
   }
 
-  .buttons button {
+  .buttons button, .buttons a.history {
     flex: 1;
     padding: 0.75rem 1.25rem;
     font-weight: 600;
@@ -231,36 +258,63 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: 0.2s;
+    text-align: center;
+    text-decoration: none;
   }
 
   .run {
     background: #00bcd4;
-  }
-
-  .bench {
-    background: #4caf50;
+    color: white;
   }
 
   .clear {
     background: #e74c3c;
+    color: white;
   }
 
-  .buttons button:hover {
+  .history {
+    background: #9b59b6;
+    color: white;
+  }
+
+  .buttons button:hover, .buttons a.history:hover {
     filter: brightness(1.1);
-  }
-
-  pre {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    color: #a0ffaf;
-    white-space: pre-wrap;
   }
 
   .placeholder {
     color: #ccc;
     opacity: 0.7;
+    font-size: 0.9rem;
+  }
+
+  .result-box h4 {
+    font-size: 1rem;
+    margin-top: 1.2rem;
+    margin-bottom: 0.3rem;
+    color: #00ffff;
+  }
+
+  .result-box p, .result-box li {
+    font-size: 0.95rem;
+    color: #e0f7fa;
+    margin-left: 1rem;
+  }
+
+  .result-box ul {
+    margin-left: 1rem;
+    list-style: disc;
+  }
+
+  .mono {
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.3rem;
+    overflow-wrap: break-word;
+  }
+
+  .text-red-400 {
+    color: #f87171;
   }
 
   @media (max-width: 900px) {
