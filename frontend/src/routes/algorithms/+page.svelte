@@ -10,7 +10,7 @@
   let algorithms = [];
   let selectedType = '';
   let selectedAlgorithm = '';
-  let inputData = '';
+  let data = '';
   let testResult = null;
   let parameterValues = {};
 
@@ -42,63 +42,28 @@
     parameterValues = {};
 
     if (!algorithmObj?.parameters) return;
-
     algorithmObj.parameters.forEach(param => {
-      switch (param) {
-        case 'keySize':
-          parameterValues[param] = '128';
-          break;
-        case 'salt':
-          parameterValues[param] = crypto.getRandomValues(new Uint8Array(8)).join('');
-          break;
-        case 'iv':
-          parameterValues[param] = crypto.getRandomValues(new Uint8Array(16)).join('');
-          break;
-        case 'ivSize':
-          parameterValues[param] = '16';
-          break;
-        case 'iterations':
-          parameterValues[param] = '1000';
-          break;
-        case 'costFactor':
-          parameterValues[param] = '16384';
-          break;
-        case 'blockSize':
-          parameterValues[param] = '8';
-          break;
-        case 'parallelization':
-          parameterValues[param] = '1';
-          break;
-        case 'encryptionKey':
-          parameterValues[param] = 'mySecretKey';
-          break;
-        case 'publicKey':
-        case 'privateKey':
-          parameterValues[param] = '';
-          break;
-        default:
-          parameterValues[param] = '';
-      }
+      parameterValues[param] = '';
     });
   };
 
   const runTest = async () => {
+    const filteredParams = {};
     for (const [key, value] of Object.entries(parameterValues)) {
-      if (value.trim() === '') {
-        alert(`Please provide a value for parameter: ${key}`);
-        return;
+      if (value.trim() !== '') {
+        filteredParams[key] = value;
       }
     }
 
     try {
-      testResult = await postTest(selectedAlgorithm, inputData || 'sample data', parameterValues);
+      testResult = await postTest(selectedAlgorithm, data || 'sample data', filteredParams);
     } catch (e) {
       testResult = { error: e.message };
     }
   };
 
   const clearForm = () => {
-    inputData = '';
+    data = '';
     testResult = null;
     updateParameters();
   };
@@ -109,7 +74,7 @@
 </script>
 
 <main>
-  <h1>Cryptographic Algorithm Tester Tool</h1>
+  <h1>Cryptographic Algorithms Analysis Tool</h1>
   <p>Test and benchmark various cryptographic algorithms with different parameters</p>
 
   <div class="grid">
@@ -142,7 +107,7 @@
       {/if}
 
       <label>Input Data:</label>
-      <textarea bind:value={inputData} placeholder="Enter data or leave blank for sample data" />
+      <textarea bind:value={data} placeholder="Enter data or leave blank for sample data" />
 
       <div class="buttons">
         <button class="run" on:click={runTest}>RUN TEST</button>

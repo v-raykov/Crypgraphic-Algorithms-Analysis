@@ -82,11 +82,12 @@ export const fetchTestById = async (id) => {
 	}
 };
 
-export const postTest = async (algorithm, plaintext, parameters = {}) => {
+export const postTest = async (algorithm, data, parameters = {}) => {
+	console.log(JSON.stringify({ algorithm, data: data, parameters }));
 	try {
 		const res = await api.post(
 			'/test',
-			{ algorithm, plaintext, parameters },
+			{ algorithm, data: data, parameters },
 			{ headers: authHeaders() }
 		);
 		return res.data;
