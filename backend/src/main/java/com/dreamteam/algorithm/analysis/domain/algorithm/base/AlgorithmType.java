@@ -8,8 +8,6 @@ import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.Bl
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.encryption.base.StreamCipherEncryptionAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.exchange.key.KeyExchangeAlgorithm;
 import com.dreamteam.algorithm.analysis.domain.algorithm.impl.hash.HashAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.homomorphic.HomomorphicEncryptionAlgorithm;
-import com.dreamteam.algorithm.analysis.domain.algorithm.impl.zero.knowedge.ZeroKnowledgeProofAlgorithm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -24,10 +22,7 @@ public enum AlgorithmType {
     BLOCK_CIPHER_ENCRYPTION("Block Cipher Encryption", "block-encryption"),
     STREAM_CIPHER_ENCRYPTION("Stream Cipher Encryption", "stream-encryption"),
     HASH("Hashing", "hashing"),
-    HOMOMORPHIC_ENCRYPTION("Homomorphic Encryption", "homomorphic-encryption"),
-    KEY_EXCHANGE("Key Exchange", "key-exchange"),
-    ZERO_KNOWLEDGE_PROOF("Zero-Knowledge Proof", "zero-knowledge-proof");
-
+    KEY_EXCHANGE("Key Exchange", "key-exchange");
     final String stringValue;
     @Getter
     final String endpoint;
@@ -53,9 +48,7 @@ public enum AlgorithmType {
             case BlockCipherEncryptionAlgorithm ignored -> BLOCK_CIPHER_ENCRYPTION;
             case StreamCipherEncryptionAlgorithm ignored -> STREAM_CIPHER_ENCRYPTION;
             case HashAlgorithm ignored -> HASH;
-            case HomomorphicEncryptionAlgorithm ignored -> HOMOMORPHIC_ENCRYPTION;
             case KeyExchangeAlgorithm ignored -> KEY_EXCHANGE;
-            case ZeroKnowledgeProofAlgorithm ignored -> ZERO_KNOWLEDGE_PROOF;
             default -> throw new IllegalStateException("Unexpected value: " + algorithm);
         };
     }
