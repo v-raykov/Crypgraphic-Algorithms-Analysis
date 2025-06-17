@@ -1,5 +1,78 @@
 <script>
+  import { onMount } from 'svelte';
   import { testHistory } from '$lib/stores.js';
+  import Chart from 'chart.js/auto';
+  import { writable } from 'svelte/store';
+
+  let chart;
+  let chartRef;
+  let selectedMetric = 'cipherTime';
+
+  const metricOptions = [
+    { value: 'cipherTime', label: 'Time (ms)' },
+    { value: 'cipherMemory', label: 'Memory (KB)' },
+    { value: 'entropy', label: 'Entropy' },
+    { value: 'frequencyScore', label: 'Frequency Score' }
+  ];
+
+  function getReadableName(result) {
+    return `${result.test.algorithm} @ ${new Date(result.timestamp).toLocaleTimeString()}`;
+  }
+
+  function updateChart() {
+    if (!chartRef) return;
+
+    if (chart) chart.destroy();
+
+    const labels = $testHistory.map(getReadableName);
+    const data = $testHistory.map(result => {
+      const { performance, security } = result;
+      switch (selectedMetric) {
+        case 'cipherTime': return performance?.cipherTime ?? 0;
+        case 'cipherMemory': return performance?.cipherMemory ?? 0;
+        case 'entropy': return security?.entropy ?? 0;
+        case 'frequencyScore': return security?.frequencyScore ?? 0;
+      }
+    });
+
+    chart = new Chart(chartRef, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: metricOptions.find(o => o.value === selectedMetric).label,
+          data,
+          backgroundColor: '#00ffff88',
+          borderColor: '#00ffff',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+          tooltip: { mode: 'index' }
+        },
+        scales: {
+          x: {
+            ticks: {
+              callback: (val, index) => labels[index]?.split(' ')[0] || ''
+            }
+          }
+        }
+      }
+    });
+  }
+
+  onMount(() => {
+    if (chartRef && $testHistory.length > 0) {
+      updateChart();
+    }
+  });
+
+  $: if (chartRef && $testHistory.length > 0 && selectedMetric) {
+    updateChart();
+  }
 </script>
 
 <main>
@@ -10,6 +83,17 @@
     <h3>🕓 Tests History</h3>
 
     {#if $testHistory.length > 0}
+      <div class="chart-controls">
+        <label for="metric">Display metric:</label>
+        <select id="metric" bind:value={selectedMetric}>
+          {#each metricOptions as option}
+            <option value={option.value}>{option.label}</option>
+          {/each}
+        </select>
+      </div>
+
+      <canvas bind:this={chartRef}></canvas>
+
       <ul>
         {#each $testHistory as result, index}
           <li>
@@ -18,15 +102,13 @@
             <small>Test ID: {result.id}</small><br />
 
             <details>
-              <summary style="font-weight:600; margin-top:0.5rem;">
-                View Details
-              </summary>
+              <summary style="font-weight:600; margin-top:0.5rem;">View Details</summary>
 
               <div style="margin-top: 0.5rem;">
                 <strong>Parameters:</strong>
                 <ul>
                   {#each Object.entries(result.test.parameters || {}) as [key, value]}
-                    <li>{key}: {value}</li>
+                    <li><span class="param-key">{key}:</span> <span class="param-value">{value}</span></li>
                   {/each}
                 </ul>
 
@@ -113,14 +195,45 @@
     padding: 1rem;
     border-radius: 0.6rem;
     margin-bottom: 1rem;
+    word-break: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
-  /* Hide default disclosure triangle */
+  canvas {
+    margin: 2rem 0;
+    max-width: 100%;
+    background-color: #1e1e1e;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  .chart-controls {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  select {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: #2c3e50;
+    color: #00ffff;
+    font-weight: bold;
+  }
+
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #00ffff55;
+  }
+
   details > summary {
     list-style: none;
     cursor: pointer;
     position: relative;
-    padding-left: 1.2rem; /* space for custom arrow */
+    padding-left: 1.2rem;
   }
 
   details > summary::-webkit-details-marker {
@@ -138,7 +251,6 @@
     color: #00ffff;
   }
 
-  /* Rotate arrow when open */
   details[open] > summary::before {
     transform: rotate(90deg);
   }
@@ -149,9 +261,7 @@
     padding: 0.4rem 0.8rem;
     border-radius: 0.3rem;
     white-space: pre-wrap;
-    word-break: break-word;
-    margin-top: 0.3rem;
-    margin-bottom: 0.7rem;
+    overflow-x: auto;
   }
 
   .history {
@@ -168,5 +278,9 @@
 
   .history:hover {
     filter: brightness(1.1);
+  }
+
+  .param-key {
+    font-weight: 600;
   }
 </style>

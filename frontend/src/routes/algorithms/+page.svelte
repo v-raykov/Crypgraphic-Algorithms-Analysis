@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { fetchAlgorithmTypes, postTest } from '$lib/api.js';
   import { testHistory } from '$lib/stores.js';
+  import { goto } from '$app/navigation';
 
   let algorithmTypes = [];
   let allAlgorithms = [];
@@ -55,7 +56,7 @@
     try {
       const result = await postTest(selectedAlgorithm, data || 'sample data', filteredParams);
       testResult = result;
-      testHistory.update(history => [result, ...history]); // update shared store
+      testHistory.update(history => [result, ...history]);
     } catch (e) {
       testResult = { error: e.message };
     }
@@ -66,14 +67,22 @@
     testResult = null;
     updateParameters();
   };
+
+  const logout = () => {
+    localStorage.removeItem('jwt');
+    goto('/login');
+  };
 </script>
 
 <main>
   <h1>Cryptographic Algorithms Analysis Tool</h1>
   <p>Test and benchmark various cryptographic algorithms with different parameters</p>
 
+  <div class="top-bar">
+    <button class="logout-button" on:click={logout}>Logout</button>
+  </div>
+
   <div class="grid">
-    <!-- Configuration Panel -->
     <div class="panel">
       <h3>🔐 Algorithm Configuration</h3>
 
@@ -111,7 +120,6 @@
       </div>
     </div>
 
-    <!-- Results Panel -->
     <div class="panel">
       <h3>📊 Test Result</h3>
 
@@ -136,12 +144,12 @@
 
             {#if testResult.cipherText}
               <h4>Cipher Text</h4>
-              <p class="mono">{testResult.cipherText}</p>
+              <p class="mono" style="white-space: pre-wrap; word-break: break-word;">{testResult.cipherText}</p>
             {/if}
 
             {#if testResult.decipherText}
               <h4>Decryption Result</h4>
-              <p class="mono">{testResult.decipherText}</p>
+              <p class="mono" style="white-space: pre-wrap; word-break: break-word;">{testResult.decipherText}</p>
             {/if}
 
             <h4>Performance</h4>
@@ -190,6 +198,27 @@
   p {
     opacity: 0.8;
     margin-bottom: 2rem;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .logout-button {
+    background: #ff5252;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .logout-button:hover {
+    background: #ff7979;
   }
 
   .grid {
@@ -311,6 +340,8 @@
     padding: 0.4rem 0.8rem;
     border-radius: 0.3rem;
     overflow-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   .text-red-400 {
