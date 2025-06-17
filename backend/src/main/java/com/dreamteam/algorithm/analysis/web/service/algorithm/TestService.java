@@ -21,7 +21,6 @@ public class TestService {
     private final Map<Class<? extends Test>, TestExecutor> executors;
 
     public TestResultDto performTest(Test test) {
-        System.out.println("service");
         TestResult result = executors.get(test.getClass()).execute(test);
         return modelMapper.map(resultStorage.addResult(result), TestResultDto.class);
     }
